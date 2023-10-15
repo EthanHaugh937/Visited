@@ -23,12 +23,7 @@ function App() {
       );
   }, []);
 
-  return error ? (
-    <div>
-      {error}
-      <p>THERE WAS AN ERROR!</p>
-    </div>
-  ) : (
+  return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
