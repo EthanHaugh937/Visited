@@ -1,23 +1,41 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 
+export interface response {
+  test: string;
+}
+
 function App() {
-  return (
+  const [test2, setTest] = useState<response>();
+  const [error, setError] = useState();
+
+  useEffect(() => {
+    fetch("/test")
+      .then((res) => res.json() as Promise<response>)
+      .then(
+        (result) => {
+          setTest(result);
+        },
+        (error) => {
+          setError(error);
+        }
+      );
+  }, []);
+
+  return error ? (
+    <div>
+      {error}
+      <p>THERE WAS AN ERROR!</p>
+    </div>
+  ) : (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React More
-        </a>
+        {test2?.test}
       </header>
     </div>
   );
