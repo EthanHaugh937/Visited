@@ -5,11 +5,12 @@ phases:
     runtime-versions:
       nodejs: latest
     commands:
+      - cd src/ts
       - npm install -g typescript
       - npm install
   build:
     commands:
-      - tsc
+      - npm run build
 
 artifacts:
   files:
