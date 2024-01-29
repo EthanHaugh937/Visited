@@ -20,7 +20,7 @@ jobs:
       - name: Set up Python version
         uses: actions/setup-python@v1
         with:
-          python-version: '3.12'
+          python-version: '3.8'
 
       - name: Create and start virtual environment
         run: |
@@ -28,12 +28,12 @@ jobs:
           source venv/bin/activate
       
       - name: Install dependencies
-        run: pip install -r src/python/requirements.txt
+        run: pip install -r requirements.txt
         
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
 
       - name: Zip artifact for deployment
-        run: zip release.zip ./src/python/* -r
+        run: zip release.zip ./* -r
 
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v3
@@ -65,9 +65,9 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v1
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_19D5FC7F85DA4072A094ABCFA7FDB11E }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_69FFDDA8D2E34F068C9F4294E1766F0A }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_DF0F257565CD44DE806F8B2D53C943AF }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_4D4A8B31EFFF4290A67ECE175A221F85 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_3FDC61109DBC4A2D8BF02260F80BD7DE }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_5A6EE8F81F624F0998C89F250542E007 }}
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
