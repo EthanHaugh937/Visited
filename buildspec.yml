@@ -1,20 +1,23 @@
 version: 0.2
 
 phases:
-  install:
-    runtime-versions:
-      nodejs: latest
+  pre_build:
     commands:
-      - cd src/ts
-      - npm install -g typescript
-      - npm install
+      # Install AWS CLI for pushing the Docker image to ECR
+      - apt-get update && apt-get install -y awscli
+      
   build:
     commands:
-      - npm run build
+      # Authenticate Docker to your ECR registry
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 253588643630.dkr.ecr.us-east-1.amazonaws.com
+      
+      # Build the Docker image
+      - docker build -t flaskapptest:latest .
+      
+      # Tag the Docker image with the ECR repository URI
+      - docker tag flaskapptest:latest 253588643630.dkr.ecr.us-east-1.amazonaws.com/flaskapptest:latest
 
-artifacts:
-  files:
-    - src/ts/package.json
-    - src/ts/package-lock.json
-    - 'src/tsbuild/**/*'
-  discard-paths: yes
+  post_build:
+    commands:
+      # Push the Docker image to ECR
+      - docker push 253588643630.dkr.ecr.us-east-1.amazonaws.com/flaskapptest:latest
