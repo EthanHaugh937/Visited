@@ -7,7 +7,7 @@ cors = CORS(app)
 
 @app.route('/home')
 def hello():
-    return {'test': 'Hello, World!'}
+    return {'test': 'Hello, World Again!'}
 
 if __name__ == "__main__":
     app.run(debug=True)
