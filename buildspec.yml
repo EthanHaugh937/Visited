@@ -4,7 +4,7 @@ phases:
   pre_build:
     commands:
       # Install AWS CLI for pushing the Docker image to ECR
-      - yum update && apt-get install -y awscli
+      - yum update && yum install -y awscli
       
   build:
     commands:
