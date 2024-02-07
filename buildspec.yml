@@ -14,7 +14,7 @@ phases:
       - cd src/python
 
       # Build the Docker image
-      - docker build -t flaskapptest:latest .
+      - docker build -t flaskapptest:latest --platform=linux/arm64.
       
       # Tag the Docker image with the ECR repository URI
       - docker tag flaskapptest:latest 253588643630.dkr.ecr.us-east-1.amazonaws.com/flaskapptest:tag
