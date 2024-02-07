@@ -22,9 +22,9 @@ phases:
       - docker buildx build --platform=linux/arm64 -t flaskapptest:latest .
       
       # Tag the Docker image with the ECR repository URI
-      - docker tag flaskapptest:latest 253588643630.dkr.ecr.us-east-1.amazonaws.com/flaskapptest:tag
+      - docker tag flaskapptest:latest 253588643630.dkr.ecr.us-east-1.amazonaws.com/flaskapptest:app
 
   post_build:
     commands:
       # Push the Docker image to ECR
-      - docker push 253588643630.dkr.ecr.us-east-1.amazonaws.com/flaskapptest:tag
+      - docker push 253588643630.dkr.ecr.us-east-1.amazonaws.com/flaskapptest:app
