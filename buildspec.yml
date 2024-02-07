@@ -6,6 +6,16 @@ run:
     port: 5000
 
 phases:
+  install:
+    runtime-versions:
+      docker: 25
+    commands:
+      - docker version
+      - curl -JLO https://github.com/docker/buildx/releases/download/v0.4.2/buildx-v0.4.2.linux-amd64
+      - mkdir -p ~/.docker/cli-plugins
+      - mv buildx-v0.4.2.linux-amd64 ~/.docker/cli-plugins/docker-buildx
+      - chmod a+rx ~/.docker/cli-plugins/docker-buildx
+      - docker run --privileged --rm tonistiigi/binfmt --install all
   pre_build:
     commands:
       # Install AWS CLI for pushing the Docker image to ECR
@@ -19,7 +29,7 @@ phases:
       - cd src/python
 
       # Build the Docker image
-      - docker build --platform=linux/arm64 -t flaskapptest:latest .
+      - docker buildx build --platform=linux/arm64 -t flaskapptest:latest .
       
       # Tag the Docker image with the ECR repository URI
       - docker tag flaskapptest:latest 253588643630.dkr.ecr.us-east-1.amazonaws.com/flaskapptest:app
