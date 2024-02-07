@@ -1,4 +1,5 @@
 version: 0.2
+runtime: python3.12
 
 phases:
   pre_build:
