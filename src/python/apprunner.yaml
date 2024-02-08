@@ -24,6 +24,6 @@ build:
       # Tag the Docker image with the ECR repository URI
       - docker tag flaskapptest:latest 253588643630.dkr.ecr.us-east-1.amazonaws.com/flaskapptest:app
 
-  post_build:
-    # Push the Docker image to ECR
-    - docker push 253588643630.dkr.ecr.us-east-1.amazonaws.com/flaskapptest:app
+    post-build:
+      # Push the Docker image to ECR
+      - docker push 253588643630.dkr.ecr.us-east-1.amazonaws.com/flaskapptest:app
