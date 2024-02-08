@@ -1,28 +1,18 @@
 version: 0.2
-runtime: python311
-run:
-  runtime-version: 3.11
-  network: 
-    port: 5000
+runtime: python3
 
-phases:
-  install:
-    runtime-versions:
-      docker: 19
-    commands:
+build:
+  commands:
+    pre_build:
+      - yum install -y awscli
       - docker version
       - curl -JLO https://github.com/docker/buildx/releases/download/v0.4.2/buildx-v0.4.2.linux-amd64
       - mkdir -p ~/.docker/cli-plugins
       - mv buildx-v0.4.2.linux-amd64 ~/.docker/cli-plugins/docker-buildx
       - chmod a+rx ~/.docker/cli-plugins/docker-buildx
       - docker run --privileged --rm tonistiigi/binfmt --install all
-  pre_build:
-    commands:
-      # Install AWS CLI for pushing the Docker image to ECR
-      - yum install -y awscli
-      
-  build:
-    commands:
+
+    build:
       # Authenticate Docker to your ECR registry
       - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 253588643630.dkr.ecr.us-east-1.amazonaws.com
       
@@ -35,6 +25,5 @@ phases:
       - docker tag flaskapptest:latest 253588643630.dkr.ecr.us-east-1.amazonaws.com/flaskapptest:app
 
   post_build:
-    commands:
-      # Push the Docker image to ECR
-      - docker push 253588643630.dkr.ecr.us-east-1.amazonaws.com/flaskapptest:app
+    # Push the Docker image to ECR
+    - docker push 253588643630.dkr.ecr.us-east-1.amazonaws.com/flaskapptest:app
