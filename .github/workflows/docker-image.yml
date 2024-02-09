@@ -33,4 +33,4 @@ jobs:
         run: docker tag flaskapp:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_ECR_REGION }}.amazonaws.com/${{ secrets.AWS_ECR_REPO }}:app
 
       - name: Push Docker image to ECR
-        run: docker push steps.login-ecr.outputs.registry/${{ AWS_ECR_REPO }}:app
+        run: docker push steps.login-ecr.outputs.registry/${{ secrets.AWS_ECR_REPO }}:app
