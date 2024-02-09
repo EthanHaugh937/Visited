@@ -21,7 +21,7 @@ jobs:
 
       - name: Login to AWS ECR
         id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
+        uses: aws-actions/amazon-ecr-login@v2
 
       - name: Build Docker image
         run: docker build -t flaskapp ./src/python
