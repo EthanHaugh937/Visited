@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_cors import CORS
+from waitress import serve
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -7,7 +8,7 @@ cors = CORS(app)
 
 @app.route('/home')
 def hello():
-    return {'test': 'Hello, World... Again!'}
+    return {'test': 'Hello, World... Again!... and again'}
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    serve(app, host="0.0.0.0", port=5000)

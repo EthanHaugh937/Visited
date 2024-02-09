@@ -1,0 +1,50 @@
+version: 0.2
+<<<<<<< HEAD:buildspec.yml
+
+phases:
+  install:
+    runtime-versions:
+      docker: 18
+
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+=======
+runtime: python3
+
+build:
+  commands:
+    pre-build:
+      - yum install -y awscli
+      - docker version
+      - curl -JLO https://github.com/docker/buildx/releases/download/v0.4.2/buildx-v0.4.2.linux-amd64
+      - mkdir -p ~/.docker/cli-plugins
+      - mv buildx-v0.4.2.linux-amd64 ~/.docker/cli-plugins/docker-buildx
+      - chmod a+rx ~/.docker/cli-plugins/docker-buildx
+      - docker run --privileged --rm tonistiigi/binfmt --install all
+
+    build:
+      # Authenticate Docker to your ECR registry
+>>>>>>> 6419a513ef8154680f6ed3f50332ece9b82990fc:src/python/apprunner.yaml
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 253588643630.dkr.ecr.us-east-1.amazonaws.com
+
+  build:
+    commands:
+      - echo Building Docker image...
+      - docker build -t flaskapp .
+
+<<<<<<< HEAD:buildspec.yml
+  post_build:
+   commands:
+      - echo Storing Docker image in S3...
+      - docker save flaskapp:latest | gzip > docker_image.tar.gz
+      - aws s3 cp docker_image.tar.gz s3://visited-flask-images/docker_image.tar.gz
+
+artifacts:
+  files:
+    - docker_image.tar.gz
+=======
+    post-build:
+      # Push the Docker image to ECR
+      - docker push 253588643630.dkr.ecr.us-east-1.amazonaws.com/flaskapptest:app
+>>>>>>> 6419a513ef8154680f6ed3f50332ece9b82990fc:src/python/apprunner.yaml
