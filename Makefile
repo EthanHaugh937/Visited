@@ -9,9 +9,15 @@ push-docker-image:
 py-deps:
 	cd src/python && venv\Scripts\activate && pip install -r requirements.txt
 
+# Install typescript dependencies
 ts-deps:
 	cd src/frontend-ts && npm install
 
+# Launch frontend application
 frontend:
 	cd src/frontend-ts && npm start
+
+# Launch backend application
+backend:
+	cd src/python && venv\Scripts\activate && waitress-serve --port=5000 app:app
 

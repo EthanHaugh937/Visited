@@ -2,3 +2,4 @@ src/frontend-ts/package-lock.json
 src/frontend-ts/package-lock.json
 src/frontend-ts/package.json
 src/python/venv/
+src/python/__pycache__/
