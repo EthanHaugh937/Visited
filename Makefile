@@ -8,3 +8,10 @@ push-docker-image:
 # Install python dependencies
 py-deps:
 	cd src/python && venv\Scripts\activate && pip install -r requirements.txt
+
+ts-deps:
+	cd src/frontend-ts && npm install
+
+frontend:
+	cd src/frontend-ts && npm start
+
