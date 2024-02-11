@@ -3,7 +3,7 @@ name: Docker Image CI
 on:
   push:
     branches: [ "main" ]
-    paths: ['src/python/**']
+    paths: ['src/frontend-ts/**']
 
 permissions:
   id-token: write   
@@ -24,14 +24,16 @@ jobs:
           aws-region: ${{ secrets.AWS_ECR_REGION }}
 
       - name: Login to AWS ECR
-        id: login-ecr
+        id: login-public-ecr
         uses: aws-actions/amazon-ecr-login@v2
+        with:
+          registry-type: public
 
       - name: Build Docker image
         run: docker build -t flaskapp ./src/python
 
       - name: Tag Docker image
-        run: docker tag flaskapp:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_ECR_REGION }}.amazonaws.com/${{ secrets.AWS_ECR_BACKEND_REPO }}:app
+        run: docker tag flaskapp:latest ${{ secrets.AWS_ECR_FRONTEND_REPO }}:app
 
       - name: Push Docker image to ECR
-        run: docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_ECR_REGION }}.amazonaws.com/${{ secrets.AWS_ECR_BACKEND_REPO }}:app
+        run: docker push ${{ secrets.AWS_ECR_FRONTEND_REPO }}:app
