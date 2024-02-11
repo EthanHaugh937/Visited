@@ -20,14 +20,12 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::253588643630:role/github-actions-ecr-public
+          role-to-assume: arn:aws:iam::253588643630:role/github-actions
           aws-region: ${{ secrets.AWS_ECR_REGION }}
 
       - name: Login to AWS ECR
-        id: login-public-ecr
+        id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
-        with:
-          registry-type: public
 
       - name: Build Docker image
         run: docker build -t flaskapp ./src/python
