@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Frontend Docker Build
 
 on:
   push:
@@ -20,7 +20,7 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::253588643630:role/github-actions
+          role-to-assume: arn:aws:iam::253588643630:role/github-actions-ecr-public
           aws-region: ${{ secrets.AWS_ECR_REGION }}
 
       - name: Login to AWS ECR
