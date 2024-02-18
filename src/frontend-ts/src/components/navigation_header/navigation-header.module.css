@@ -17,6 +17,7 @@
         border-style: solid;
         border-color: white;
         border-radius: 16px;
+        background-color: transparent;
         display: inline-block;
     }
 
