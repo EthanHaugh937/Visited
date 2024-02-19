@@ -2,23 +2,4 @@
   height: 48px;
   justify-content: space-between;
   display: flex;
-
-  .authenticationText {
-    color: white !important;
-    text-decoration: none;
-  }
-
-  .signupPill {
-    border: 1px;
-    border-style: solid;
-    border-color: white;
-    border-radius: 16px;
-    background-color: transparent;
-    display: inline-block;
-  }
-
-  .divider {
-    border: 1px solid white;
-    height: 16px;
-  }
 }
