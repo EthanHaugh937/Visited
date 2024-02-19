@@ -1,7 +1,4 @@
 {
-  "providers": [
-    "awscloudformation"
-  ],
   "projectName": "visited",
   "version": "3.1",
   "frontend": "javascript",
