@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@amcharts/amcharts5": "^5.8.4",
+    "@amcharts/amcharts5-fonts": "^5.0.1",
+    "@amcharts/amcharts5-geodata": "^5.1.2",
     "@ant-design/icons": "^5.3.0",
     "@aws-amplify/ui-react": "^6.1.4",
     "@testing-library/jest-dom": "^5.17.0",
@@ -50,6 +53,7 @@
     ]
   },
   "devDependencies": {
+    "@types/react-simple-maps": "^3.0.4",
     "aws-cdk": "^2.124.0",
     "aws-cdk-lib": "^2.124.0",
     "constructs": "^10.3.0",
