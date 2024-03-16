@@ -1,4 +1,4 @@
-import Map from "../map/map";
+import Map from "../map_visualisation/map_visualisation";
 import NavigationHeader from "../navigation_header/navigation-header";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import { Col, Row } from "antd";

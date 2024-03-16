@@ -50,13 +50,13 @@ export function Map() {
     polygonTemplate.events.on("click", function (ev) {
       console.log(ev.target.dataItem);
     });
-    
+
     return () => {
       root.dispose();
     };
-  }, [data]);
+  }, []);
 
-  return <div id="chartdiv" className={`${styles.map}`}></div>;
+  return <div id="chartdiv" className={`${styles.map}`} />
 }
 
 export default Map;
