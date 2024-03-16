@@ -1,12 +1,18 @@
 .map {
-    height: 500px;
-    width: 100%;
-    margin-top: 8px;
+  height: 500px;
+  width: 100%;
+  margin-top: 8px;
 }
 
 /* Prevent map from slipping down when screen sizes reduces */
-@media screen and (max-width: 768px) {
-    .map {
-        margin-top: -20vh;
-    }
+@media screen and (max-width: 680px) {
+  .map {
+    margin-top: -10vh;
   }
+}
+
+@media screen and (min-width: 900px) {
+  .map {
+    margin-top: 16px;
+  }
+}
