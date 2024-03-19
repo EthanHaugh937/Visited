@@ -1,0 +1,5 @@
+.header {
+  height: 48px;
+  justify-content: space-between;
+  display: flex;
+}
