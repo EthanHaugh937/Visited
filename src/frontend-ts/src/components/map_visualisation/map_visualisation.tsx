@@ -20,11 +20,11 @@ export function Map() {
     let chart = root.container.children.push(
       am5map.MapChart.new(root, {
         projection: am5map.geoNaturalEarth1(),
-        panX: "none",
-        panY: "none",
         draggable: false,
       })
     );
+
+    const zoomControl = chart.set("zoomControl", am5map.ZoomControl.new(root, {}));
 
     const continentSeries = chart.series.push(
       am5map.MapPolygonSeries.new(root, {
@@ -41,11 +41,19 @@ export function Map() {
       })
     );
 
+    const selectedCountrySeries = chart.series.push(
+      am5map.MapPolygonSeries.new(root, {
+        geoJSON: am5geodata_worldLow,
+        exclude: ["AQ"],
+        visible: false,
+      })
+    );
+
     // Change the default colour for countries
     continentSeries.mapPolygons.template.setAll({
       interactive: true,
       tooltipText: "{name}",
-      fill: am5.color(0xaaaaaa),
+      fill: am5.color("#aaaaaa"),
       templateField: "polygonSettings",
     });
 
@@ -54,20 +62,20 @@ export function Map() {
       fill: am5.color("#6c6765"),
     });
 
-    countrySeries.mapPolygons.template.setAll({
+    selectedCountrySeries.mapPolygons.template.setAll({
       tooltipText: "{name}",
-      fill: am5.color(0xaaaaaa),
+      fill: am5.color("#aaaaaa"),
       interactive: true
     });
 
-    countrySeries.mapPolygons.template.states.create("hover", {
+    selectedCountrySeries.mapPolygons.template.states.create("hover", {
       fill: am5.color("#6c6765")
     });
 
     // Set all visited countries to different colour
     continentSeries.data.setAll(
       Array.from(countriesVisited, (id) => {
-        return { id: id, polygonSettings: { fill: am5.color("#f00") } };
+        return { id: id, polygonSettings: { fill: am5.color("#888888") } };
       })
     );
 
@@ -108,15 +116,42 @@ export function Map() {
           ),
         ]).then((results) => {
           var geodata = am5.JSONParser.parse(results[1].response as string);
-          countrySeries.setAll({
+          selectedCountrySeries.setAll({
             geoJSON: geodata,
           });
 
           continentSeries.hide();
-          countrySeries.show();
+          selectedCountrySeries.show();
         });
       }
     });
+
+    let homeButton = zoomControl.children.moveValue(am5.Button.new(root, {
+      paddingTop: 10,
+      paddingBottom: 10,
+      icon:
+        am5.Graphics.new(root, {
+          svgPath: "M16,8 L14,8 L14,16 L10,16 L10,10 L6,10 L6,16 L2,16 L2,8 L0,8 L8,0 L16,8 Z M16,8",
+          fill: am5.color(0xffffff)
+        })
+    }), 0)
+
+
+    zoomControl.plusButton.get("background")?.setAll({
+      fill: am5.color("#6c6765")
+    })
+    zoomControl.minusButton.get("background")?.setAll({
+      fill: am5.color("#6c6765")
+    })
+    homeButton.get("background")?.setAll({
+      fill: am5.color("#6c6765")
+    })
+
+    homeButton.events.on("click", function() {
+      chart.goHome();
+      continentSeries.show()
+      selectedCountrySeries.hide()
+    })
 
     return () => {
       root.dispose();
