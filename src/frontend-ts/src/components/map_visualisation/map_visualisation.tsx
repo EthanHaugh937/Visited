@@ -7,9 +7,11 @@ import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
 import styles from "./map.module.css";
 import { useLayoutEffect } from "react";
 
-const visitedPlaces = ["US-AK", "US-CO"]
+export interface MapProps {
+  visitedPlaces: Array<string>;
+}
 
-export function Map() {
+export function Map({ visitedPlaces }: MapProps) {
   useLayoutEffect(() => {
     const root = am5.Root.new("chartdiv");
 
@@ -78,10 +80,13 @@ export function Map() {
       "fill",
       function (fill, target) {
         const targeted = target.dataItem?.dataContext! as any;
-        if (targeted.id && visitedPlaces.find((id) => id.includes(`${targeted.id}-`))) {
+        if (
+          targeted.id &&
+          visitedPlaces.find((id) => id.includes(`${targeted.id}-`))
+        ) {
           return am5.color("#888888");
         }
-        return fill
+        return fill;
       }
     );
 
@@ -134,7 +139,7 @@ export function Map() {
               if (targeted.id && visitedPlaces.includes(targeted.id)) {
                 return am5.color("#888888");
               }
-              return fill
+              return fill;
             }
           );
 
@@ -176,7 +181,7 @@ export function Map() {
     return () => {
       root.dispose();
     };
-  }, []);
+  }, [visitedPlaces]);
 
   return <div id="chartdiv" className={`${styles.map}`} />;
 }

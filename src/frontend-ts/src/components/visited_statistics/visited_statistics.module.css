@@ -1,0 +1,22 @@
+.statisticsContainer {
+    .contentStyle {
+      float: left;
+      margin: 0;
+      height: 160px;
+      color: white;
+      line-height: 60px;
+      text-align: center;
+      background: #888888;
+    }
+  
+    .card {
+      min-height: 210px;
+    }
+  }
+  
+  @media screen and (max-width: 680px) {
+    .statisticsContainer {
+      display: inline;
+    }
+  }
+  
