@@ -1,0 +1,23 @@
+.card {
+  min-height: 170px;
+  border-radius: 25px;
+  background: #aaaaaa;
+
+  .statisticVizRight {
+    float: right;
+  }
+
+  .statisticVizLeft {
+    float: left;
+  }
+
+  .percentageViz {
+    display: flex;
+    justify-content: center;
+  }
+
+  .statisticNumber {
+    display: table-cell;
+    vertical-align: middle;
+  }
+}
