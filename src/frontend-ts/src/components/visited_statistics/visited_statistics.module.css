@@ -11,24 +11,6 @@
     border-radius: 25px;
     background: #aaaaaa;
     padding: 8px;
-
-    .statisticVizRight {
-      float: right;
-    }
-
-    .statisticVizLeft {
-      float: left;
-    }
-
-    .percentageViz {
-      display: flex;
-      justify-content: center;
-    }
-
-    .statisticNumber {
-      display: table-cell;
-      vertical-align: middle;
-    }
   }
 }
 

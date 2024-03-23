@@ -8,17 +8,20 @@ export interface StatisticVisualisationProps {
   visualisationTitle: string;
   completeNumberOfCountries: number;
   maximumNumberOfCountries: number;
-  colourGradients: ProgressProps['strokeColor'] | undefined;
+  colourGradients: ProgressProps["strokeColor"];
 }
 
 export function StatisticVisualisation({
-    maximumNumberOfCountries,
+  maximumNumberOfCountries,
   completeNumberOfCountries,
   visualisationTitle,
   colourGradients,
 }: StatisticVisualisationProps) {
   const visitedCountriesPercentage = Number(
-    ((completeNumberOfCountries / maximumNumberOfCountries) * 100).toLocaleString("en-us", {
+    (
+      (completeNumberOfCountries / maximumNumberOfCountries) *
+      100
+    ).toLocaleString("en-us", {
       maximumFractionDigits: 1,
     })
   );
