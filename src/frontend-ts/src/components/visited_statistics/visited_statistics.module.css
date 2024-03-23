@@ -1,20 +1,39 @@
 .statisticsContainer {
-    .contentStyle {
-      height: 160px;
-      color: white;
-      line-height: 60px;
-      text-align: center;
-      background: #888888;
+  .contentStyle {
+    height: 160px;
+    line-height: 50px;
+    text-align: center;
+    border-radius: 25px;
+  }
+
+  .card {
+    min-height: 170px;
+    border-radius: 25px;
+    background: #aaaaaa;
+    padding: 8px;
+
+    .statisticVizRight {
+      float: right;
     }
-  
-    .card {
-      min-height: 210px;
+
+    .statisticVizLeft {
+      float: left;
+    }
+
+    .percentageViz {
+      display: flex;
+      justify-content: center;
+    }
+
+    .statisticNumber {
+      display: table-cell;
+      vertical-align: middle;
     }
   }
-  
-  @media screen and (max-width: 680px) {
-    .statisticsContainer {
-      display: inline;
-    }
+}
+
+@media screen and (max-width: 680px) {
+  .statisticsContainer {
+    display: inline;
   }
-  
+}
