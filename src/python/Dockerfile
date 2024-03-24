@@ -6,6 +6,7 @@ COPY requirements.txt .
 
 ARG ACCESS_KEY
 ENV COSMOS_ACCOUNT_KEY=${ACCESS_KEY}
+RUN echo "ACCESS KEY: ${COSMOS_ACCOUNT_KEY}"
 
 RUN pip install -r requirements.txt
 
