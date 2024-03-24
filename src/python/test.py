@@ -1,8 +1,6 @@
-from flask import Flask
-from flask_cors import CORS
-from waitress import serve
 from azure.cosmos import CosmosClient
 import os
+import json
 
 settings = {
     'host': os.environ.get('ACCOUNT_HOST', 'https://visited.documents.azure.com:443/'),
@@ -11,11 +9,10 @@ settings = {
 
 client = CosmosClient(settings['host'], {'masterKey': settings['master_key']}, user_agent="CosmosDBPythonQuickstart", user_agent_overwrite=True)
 
-app = Flask(__name__)
-cors = CORS(app)
+DATABASE_NAME = 'visitedUserTravel'
+database = client.get_database_client(DATABASE_NAME)
+CONTAINER_NAME = 'userTravel'
+container = database.get_container_client(CONTAINER_NAME)
 
-if __name__ == "__main__":
-    serve(app, host="0.0.0.0", port=5000)
-
-# Import routes
-from apis import add_location
+for item in container.query_items(query="Select * FROM userTravel", enable_cross_partition_query=True):
+    print(json.dumps(item, indent=True))
