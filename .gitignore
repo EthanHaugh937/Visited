@@ -1,3 +1,4 @@
 src/python/venv/
 src/python/__pycache__/
 src/frontend-ts/amplify/.config
+*\__pycache__
