@@ -9,6 +9,7 @@ settings = {
     'master_key': os.environ.get('COSMOS_ACCOUNT_KEY'),
 }
 
+print("KEY: ", settings['master_key'])
 client = CosmosClient(settings['host'], {'masterKey': settings['master_key']}, user_agent="CosmosDBPythonQuickstart", user_agent_overwrite=True)
 
 app = Flask(__name__)
