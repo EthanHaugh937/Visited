@@ -29,6 +29,8 @@ jobs:
 
       - name: Build Docker image
         run: docker build --build-arg ACCESS_KEY=${{ secrets.COSMOS_ACCOUNT_KEY }} -t flaskapp ./src/python
+        env: 
+          ACCESS_KEY: ${{ secrets.COSMOS_ACCOUNT_KEY }}
 
       - name: Tag Docker image
         run: docker tag flaskapp:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_ECR_REGION }}.amazonaws.com/${{ secrets.AWS_ECR_BACKEND_REPO }}:app
