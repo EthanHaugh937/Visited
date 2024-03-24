@@ -17,5 +17,4 @@ cors = CORS(app)
 if __name__ == "__main__":
     serve(app, host="0.0.0.0", port=5000)
 
-# Import routes
-from apis import add_location
+from apis.add_location import add_location

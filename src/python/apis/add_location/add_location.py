@@ -1,4 +1,4 @@
-from app import app, client
+from app import app
 
 @app.route('/test')
 def test():
