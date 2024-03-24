@@ -9,7 +9,6 @@ settings = {
     'master_key': os.environ.get('COSMOS_ACCOUNT_KEY'),
 }
 
-print("KEY: ", settings['master_key'])
 client = CosmosClient(settings['host'], {'masterKey': settings['master_key']}, user_agent="CosmosDBPythonQuickstart", user_agent_overwrite=True)
 
 app = Flask(__name__)
@@ -18,4 +17,4 @@ cors = CORS(app)
 if __name__ == "__main__":
     serve(app, host="0.0.0.0", port=5000)
 
-from apis.add_location import add_location
+from apis.add_location.add_location import add_location
