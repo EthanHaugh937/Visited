@@ -52,7 +52,7 @@ def insertNewRecordForUser(
     return container.create_item(insertInfo)
 
 
-def upsertVisitedRecord(userId: str, arrival: str, departure: str, location: str):
+def upsertVisitedRecord(userId: str, arrival: str, departure: str, location: str) -> Dict[str, any]:
     userRecord = getUserVisitedRecord(userId)
 
     dataToUpsert = dict(
