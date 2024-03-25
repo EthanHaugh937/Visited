@@ -204,7 +204,7 @@ export function Map({ visitedPlaces }: MapProps) {
     return () => {
       root.dispose();
     };
-  }, [setCountryData, visitedPlaces]);
+  }, [visitedPlaces]);
 
   return (
     <>
