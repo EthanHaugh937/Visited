@@ -1,7 +1,6 @@
 import { Button, Drawer, Row } from "antd";
 import styles from "./navigation-header.module.css";
 import { Amplify } from "aws-amplify";
-import { Authenticator } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
 import awsconfig from "../../aws-exports";
 import { signOut } from "aws-amplify/auth";
@@ -18,7 +17,7 @@ function NavigationHeader() {
 
   async function handleSignOut() {
     await signOut();
-    setDrawerOpen(false)
+    setDrawerOpen(false);
   }
 
   const onDrawerOpen = () => {
@@ -26,7 +25,7 @@ function NavigationHeader() {
   };
 
   return (
-    <Authenticator className="mt-4">
+    <>
       <div className={`${styles.header} bg-black-3`}>
         <div className={`px-3 mt-2`}>Visited</div>
         <div className={`px-3 mt-2`}>
@@ -57,7 +56,7 @@ function NavigationHeader() {
           </Button>
         </Row>
       </Drawer>
-    </Authenticator>
+    </>
   );
 }
 
