@@ -1,0 +1,31 @@
+export interface CountryData {
+    country: string;
+    province: string;
+    countryCode: string;
+    provinceCode: string;
+}
+
+export interface GetCountriesResponse {
+    data: Country[]
+}
+
+export interface Country {
+    name: string;
+    Iso2: string;
+    Iso3: string;
+}
+
+export interface GetCountryProvincesResponse {
+    error: boolean;
+    msg: string;
+    data: {
+        name: string;
+        iso3: string;
+        states: CountryState[]
+    }
+}
+
+export interface CountryState {
+    name: string;
+    state_code: string;
+}

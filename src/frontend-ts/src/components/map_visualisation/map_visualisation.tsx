@@ -5,13 +5,23 @@ import am5geodata_continentsLow from "@amcharts/amcharts5-geodata/worldLow";
 import am5geodata_data_countries from "@amcharts/amcharts5-geodata/data/countries2";
 import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
 import styles from "./map.module.css";
-import { useLayoutEffect } from "react";
+import { useLayoutEffect, useState } from "react";
+import VisitedLocationModal from "../visited_location_modal/visited_location_modal";
+import { CountryData } from "../../types/types";
 
 export interface MapProps {
   visitedPlaces: Array<string>;
 }
 
 export function Map({ visitedPlaces }: MapProps) {
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [countryData, setCountryData] = useState<CountryData>({
+    country: "",
+    province: "",
+    countryCode: "",
+    provinceCode: "",
+  });
+
   useLayoutEffect(() => {
     const root = am5.Root.new("chartdiv");
 
@@ -149,6 +159,19 @@ export function Map({ visitedPlaces }: MapProps) {
       }
     });
 
+    // Open modal with country code when state/province is clicked
+    selectedCountrySeries.mapPolygons.template.events.on("click", (ev) => {
+      const targetted = ev.target.dataItem?.dataContext as any;
+      const codes = targetted.id.split("-")
+      setCountryData({
+        country: targetted.CNTRY,
+        province: targetted.name,
+        countryCode: codes[0],
+        provinceCode: codes[1],
+      });
+      setShowModal(true);
+    });
+
     let homeButton = zoomControl.children.moveValue(
       am5.Button.new(root, {
         paddingTop: 10,
@@ -183,7 +206,16 @@ export function Map({ visitedPlaces }: MapProps) {
     };
   }, [visitedPlaces]);
 
-  return <div id="chartdiv" className={`${styles.map}`} />;
+  return (
+    <>
+      <div id="chartdiv" className={`${styles.map}`} />
+      <VisitedLocationModal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        countryData={countryData}
+      />
+    </>
+  );
 }
 
 export default Map;
