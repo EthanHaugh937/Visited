@@ -52,15 +52,23 @@ def insertNewRecordForUser(
     return container.create_item(insertInfo)
 
 
-def upsertVisitedRecord(userId: str, arrival: str, departure: str, location: str) -> Dict[str, any]:
+def upsertVisitedRecord(
+    userId: str, arrival: str, departure: str, location: str
+) -> Dict[str, any]:
     userRecord = getUserVisitedRecord(userId)
 
     dataToUpsert = dict(
-        arrival= arrival,
-        departure= departure,
-        location= location,
+        arrival=arrival,
+        departure=departure,
+        location=location,
     )
 
     userRecord[0]["visited"].append(dataToUpsert)
 
     return container.upsert_item(body=userRecord[0])
+
+
+def getUserLocations(userId: str) -> List[Dict[str, str]]:
+    userRecord = getUserVisitedRecord(userId)
+
+    return userRecord[0]["visited"]
