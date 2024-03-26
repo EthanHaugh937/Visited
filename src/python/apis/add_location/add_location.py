@@ -16,7 +16,7 @@ from queries.location_queries import (
     methods=["POST"],
 )
 @authenticated
-def add_location(countryCode: str, arrival: str, departure: str, userId: str = "1234"):
+def add_location(userId: str, countryCode: str, arrival: str, departure: str):
     if not countryCode:
         return make_response(jsonify({"message": "Country Code not provided"}), 404)
 

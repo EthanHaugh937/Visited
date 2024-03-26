@@ -29,3 +29,10 @@ export interface CountryState {
     name: string;
     state_code: string;
 }
+
+export interface AddVisitedLocationRequest {
+    accessToken: string | undefined,
+    arrival: string,
+    departure: string,
+    locationCode: string
+}
