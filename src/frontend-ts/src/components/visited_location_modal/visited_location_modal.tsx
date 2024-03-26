@@ -61,7 +61,7 @@ export function VisitedLocationModal({
 
       await axios
         .post(
-          `http://localhost:5000/location/${apiData.locationCode}/${apiData.arrival}/${apiData.departure}`,
+          `https://ax6v5dntdj.us-east-1.awsapprunner.com/location/${apiData.locationCode}/${apiData.arrival}/${apiData.departure}`,
           {},
           config
         )
