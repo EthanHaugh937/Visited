@@ -8,7 +8,7 @@ export function MapVisualisationView() {
   return (
     <>
       <Row className="mb-3">
-        <Map visitedPlaces={visitedPlaces}/>
+        <Map visitedPlaces={visitedPlaces} />
       </Row>
 
       <VisitedStatistics visitedPlaces={visitedPlaces} />

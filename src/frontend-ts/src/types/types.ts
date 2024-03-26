@@ -1,3 +1,5 @@
+import { FetchUserAttributesOutput } from "aws-amplify/auth";
+
 export interface CountryData {
     country: string;
     province: string;
@@ -35,4 +37,10 @@ export interface AddVisitedLocationRequest {
     arrival: string,
     departure: string,
     locationCode: string
+}
+
+export interface useFetchUserAttributesResponse {
+    isLoading: boolean;
+    error: any;
+    userInfo: FetchUserAttributesOutput | undefined;
 }
