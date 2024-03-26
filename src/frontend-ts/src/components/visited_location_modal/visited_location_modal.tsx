@@ -66,7 +66,7 @@ export function VisitedLocationModal({
           config
         )
         .catch((error: AxiosError) => {
-          setIsLoading(false)
+          setIsLoading(false);
           const err = error.response?.data as any;
           return openNotificationWithIcon(err.message);
         });
@@ -113,15 +113,19 @@ export function VisitedLocationModal({
       .validateFields()
       .then(async (res) => {
         await getAccessToken();
-        console.log(res["dates"][0])
-        const arrival = `${res["dates"][0]["$D"]}Z${res["dates"][0]["$M"]+1}Z${res["dates"][0]["$y"]}`;
-        const departure = `${res["dates"][1]["$D"]}Z${res["dates"][1]["$M"]+1}Z${res["dates"][1]["$y"]}`;
+        
+        const arrival = `${res["dates"][0]["$D"]}Z${
+          res["dates"][0]["$M"] + 1
+        }Z${res["dates"][0]["$y"]}`;
+        const departure = `${res["dates"][1]["$D"]}Z${
+          res["dates"][1]["$M"] + 1
+        }Z${res["dates"][1]["$y"]}`;
 
         setApiData({
           accessToken: accessToken,
           arrival: arrival,
           departure: departure,
-          locationCode: res.country,
+          locationCode: `${res.country}-${res.province}`,
         });
 
         fireApiRequest();
@@ -200,6 +204,7 @@ export function VisitedLocationModal({
             </Space.Compact>
           </Form.Item>
           <Form.Item
+            label="dates"
             name={"dates"}
             required
             noStyle
