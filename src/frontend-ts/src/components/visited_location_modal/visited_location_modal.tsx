@@ -64,15 +64,16 @@ export function VisitedLocationModal({
           `https://ax6v5dntdj.us-east-1.awsapprunner.com/location/${apiData.locationCode}/${apiData.arrival}/${apiData.departure}`,
           {},
           config
-        )
+        ).then((resposne) => {
+          setIsLoading(false);
+          setShowModal(false);
+          form.resetFields();
+        })
         .catch((error: AxiosError) => {
           setIsLoading(false);
           const err = error.response?.data as any;
           return openNotificationWithIcon(err.message);
         });
-      setIsLoading(false);
-      setShowModal(false);
-      form.resetFields();
     }
   };
 
