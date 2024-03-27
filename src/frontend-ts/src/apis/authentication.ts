@@ -33,7 +33,7 @@ export function UseDeleteUserAccount() {
   return fetchAuthSession()
     .then((response) => {
       axios
-        .delete("http://localhost:5000/account", {
+        .delete("https://ax6v5dntdj.us-east-1.awsapprunner.com/account", {
           headers: {
             Authorization: `Bearer: ${response.tokens?.accessToken.toString()}`,
           },
