@@ -5,24 +5,17 @@ import am5geodata_continentsLow from "@amcharts/amcharts5-geodata/worldLow";
 import am5geodata_data_countries from "@amcharts/amcharts5-geodata/data/countries2";
 import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
 import styles from "./map.module.css";
-import { useLayoutEffect, useState } from "react";
-import VisitedLocationModal from "../visited_location_modal/visited_location_modal";
+import { Dispatch, SetStateAction, useLayoutEffect } from "react";
 import { CountryData, useGetUserLocationsResponse } from "../../types/types";
 import { Spin } from "antd";
 
 export interface MapProps {
   visitedPlaces: useGetUserLocationsResponse;
+  setCountryData: Dispatch<SetStateAction<CountryData>>
+  setModalOpen: Dispatch<SetStateAction<boolean>>
 }
 
-export function Map({ visitedPlaces }: MapProps) {
-  const [showModal, setShowModal] = useState<boolean>(false);
-  const [countryData, setCountryData] = useState<CountryData>({
-    country: "",
-    province: "",
-    countryCode: "",
-    provinceCode: "",
-  });
-
+export function Map({ visitedPlaces, setCountryData, setModalOpen }: MapProps) {
   useLayoutEffect(() => {
     const root = am5.Root.new("chartdiv");
 
@@ -177,7 +170,7 @@ export function Map({ visitedPlaces }: MapProps) {
         countryCode: codes[0],
         provinceCode: codes[1],
       });
-      setShowModal(true);
+      setModalOpen(true);
     });
 
     let homeButton = zoomControl.children.moveValue(
@@ -212,7 +205,7 @@ export function Map({ visitedPlaces }: MapProps) {
     return () => {
       root.dispose();
     };
-  }, [visitedPlaces]);
+  }, [setCountryData, setModalOpen, visitedPlaces]);
 
   return (
     <>
@@ -228,11 +221,6 @@ export function Map({ visitedPlaces }: MapProps) {
             ? `${styles.map} ${styles.mapLoading}`
             : `${styles.map}`
         }
-      />
-      <VisitedLocationModal
-        showModal={showModal}
-        setShowModal={setShowModal}
-        countryData={countryData}
       />
     </>
   );
