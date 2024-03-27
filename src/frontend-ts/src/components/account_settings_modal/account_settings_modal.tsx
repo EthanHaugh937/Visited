@@ -7,9 +7,13 @@ import {
   Space,
   Typography,
 } from "antd";
-import { useFetchUserAttributes } from "../../apis/authentication";
+import {
+  UseDeleteUserAccount,
+  useFetchUserAttributes,
+} from "../../apis/authentication";
 import { DeleteOutlined } from "@ant-design/icons";
 import { Dispatch, SetStateAction } from "react";
+import { signOut } from "aws-amplify/auth";
 
 export interface AccountSettingsModalProps {
   showModal: boolean;
@@ -49,7 +53,7 @@ export function AccountSettingsModal({
       okType: "danger",
       cancelText: "Cancel",
       onOk() {
-        console.log("OK");
+        return UseDeleteUserAccount().catch((error) => console.log(error));
       },
     });
   };
@@ -65,6 +69,7 @@ export function AccountSettingsModal({
           Close
         </Button>,
       ]}
+      onOk={() => signOut()}
       onCancel={handleModalCancel}
     >
       {isLoading ? (

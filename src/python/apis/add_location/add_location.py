@@ -1,3 +1,4 @@
+from ast import Dict
 from flask import jsonify, make_response
 from app import app
 
@@ -16,12 +17,14 @@ from queries.location_queries import (
     methods=["POST"],
 )
 @authenticated
-def add_location(userId: str, countryCode: str, arrival: str, departure: str):
+def add_location(authentication: Dict, countryCode: str, arrival: str, departure: str):
     if not countryCode:
         return make_response(jsonify({"message": "Country Code not provided"}), 404)
 
     if not arrival or not departure:
         return make_response(jsonify({"message": "Visited Date not provided"}), 404)
+    
+    userId = authentication.get("userId")
 
     if len(getUserVisitedRecord(userId)) == 0:
         creation_result = insertNewRecordForUser(

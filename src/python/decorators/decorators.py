@@ -71,8 +71,7 @@ def authenticated(func):
                 )
             except jwt.ExpiredSignatureError:
                 return jsonify({"message": "Access Token expired"}), 401
-
-            return func(payload["sub"], *args, **kwargs)
+            return func(dict(userId=payload["sub"], token=token), *args, **kwargs)
         raise AuthError(
             {"message": "Invalid Header: Could not find proper key"},
             401,

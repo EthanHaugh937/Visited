@@ -19,3 +19,4 @@ if __name__ == "__main__":
 
 from apis.add_location.add_location import add_location
 from apis.retrieve_location import retrieve_location
+from apis.account.account import delete_account
