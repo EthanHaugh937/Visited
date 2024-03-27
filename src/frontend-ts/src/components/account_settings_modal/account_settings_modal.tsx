@@ -13,7 +13,6 @@ import {
 } from "../../apis/authentication";
 import { DeleteOutlined } from "@ant-design/icons";
 import { Dispatch, SetStateAction } from "react";
-import { signOut } from "aws-amplify/auth";
 
 export interface AccountSettingsModalProps {
   showModal: boolean;
@@ -69,7 +68,6 @@ export function AccountSettingsModal({
           Close
         </Button>,
       ]}
-      onOk={() => signOut()}
       onCancel={handleModalCancel}
     >
       {isLoading ? (
