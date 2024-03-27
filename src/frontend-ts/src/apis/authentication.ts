@@ -18,7 +18,7 @@ export function useFetchUserAttributes(): useFetchUserAttributesResponse {
           setUserInfo(response);
         })
         .catch((error) => {
-            setError(error)
+          setError(error);
         }),
     []
   );

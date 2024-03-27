@@ -1,17 +1,18 @@
+import { useGetUserLocations } from "../../apis/user_locations";
 import Map from "../map_visualisation/map_visualisation";
 import VisitedStatistics from "../visited_statistics/visited_statistics";
 import { Row } from "antd";
 
 export function MapVisualisationView() {
-  const visitedPlaces = ["US-AK", "US-CO", "GB-SCT", "IE-CN"];
-
+  const locations = useGetUserLocations()
+  
   return (
     <>
       <Row className="mb-3">
-        <Map visitedPlaces={visitedPlaces} />
+        <Map visitedPlaces={locations}/>
       </Row>
 
-      <VisitedStatistics visitedPlaces={visitedPlaces} />
+      <VisitedStatistics visitedPlaces={locations} />
     </>
   );
 }
