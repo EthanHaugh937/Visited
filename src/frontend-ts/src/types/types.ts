@@ -18,6 +18,11 @@ export interface Country {
 }
 
 export interface GetCountryProvincesResponse {
+    provinces: GetCountryProvinces | undefined
+    isLoading: boolean;
+}
+
+export interface GetCountryProvinces {
     error: boolean;
     msg: string;
     data: {

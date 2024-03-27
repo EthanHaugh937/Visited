@@ -11,7 +11,7 @@ import {
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { GetCountries } from "../../apis/countries";
 import { AddVisitedLocationRequest, CountryData } from "../../types/types";
-import { GetCountryProvinces } from "../../apis/countryCodes";
+import { useGetCountryProvinces } from "../../apis/countryCodes";
 import styles from "./visited_location_modal.module.css";
 import { fetchAuthSession } from "aws-amplify/auth";
 import axios, { AxiosError } from "axios";
@@ -84,7 +84,7 @@ export function VisitedLocationModal({
     form.setFieldValue("province", countryData.provinceCode);
   }, [form, countryData, countriesResponse]);
 
-  const provincesResponse = GetCountryProvinces({ country: selectedCountry });
+  const provincesResponse = useGetCountryProvinces({ country: selectedCountry });
 
   const handleModalCancel = () => {
     setShowModal(false);
@@ -147,7 +147,7 @@ export function VisitedLocationModal({
     });
   });
 
-  provincesResponse?.data.states.forEach((province) => {
+  provincesResponse?.provinces?.data?.states.forEach((province) => {
     provincesOptions.push({
       label: province.name,
       value: province.state_code,
@@ -199,6 +199,7 @@ export function VisitedLocationModal({
                   placeholder="Select Province"
                   options={provincesOptions}
                   value={selectedCountryCode}
+                  loading={provincesResponse?.isLoading}
                 />
               </Form.Item>
             </Space.Compact>
