@@ -1,21 +1,10 @@
 from typing import Dict, List
 import uuid
 from app import client
+from queries.account_queries import getUserVisitedRecord
 
 db = client.get_database_client("visitedUserTravel")
 container = db.get_container_client("userTravel")
-
-
-def getUserVisitedRecord(userId: str) -> List[Dict[str, any]]:
-    if item := container.query_items(
-        f"SELECT * FROM userTravel t WHERE t.userId='{userId}'",
-        enable_cross_partition_query=True,
-    ):
-
-        return list(item)
-
-    return []
-
 
 def validateVisitedEntryExists(
     userId: str, arrival: str, departure: str, locationCode: str

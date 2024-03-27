@@ -1,9 +1,12 @@
 import {
   FetchUserAttributesOutput,
+  fetchAuthSession,
   fetchUserAttributes,
+  signOut,
 } from "aws-amplify/auth";
 import { useMemo, useState } from "react";
 import { useFetchUserAttributesResponse } from "../types/types";
+import axios from "axios";
 
 export function useFetchUserAttributes(): useFetchUserAttributesResponse {
   const [userInfo, setUserInfo] = useState<FetchUserAttributesOutput>();
@@ -24,4 +27,21 @@ export function useFetchUserAttributes(): useFetchUserAttributesResponse {
   );
 
   return { isLoading: isLoading, userInfo: userInfo, error: error };
+}
+
+export function UseDeleteUserAccount() {
+  return fetchAuthSession()
+    .then((response) => {
+      axios
+        .delete("https://ax6v5dntdj.us-east-1.awsapprunner.com/account", {
+          headers: {
+            Authorization: `Bearer: ${response.tokens?.accessToken.toString()}`,
+          },
+        })
+        .catch((error) => console.log(error))
+        .finally(() => signOut());
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 }
