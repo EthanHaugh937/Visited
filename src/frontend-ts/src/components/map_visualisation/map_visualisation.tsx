@@ -7,10 +7,11 @@ import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
 import styles from "./map.module.css";
 import { useLayoutEffect, useState } from "react";
 import VisitedLocationModal from "../visited_location_modal/visited_location_modal";
-import { CountryData } from "../../types/types";
+import { CountryData, useGetUserLocationsResponse } from "../../types/types";
+import { Spin } from "antd";
 
 export interface MapProps {
-  visitedPlaces: Array<string>;
+  visitedPlaces: useGetUserLocationsResponse;
 }
 
 export function Map({ visitedPlaces }: MapProps) {
@@ -92,7 +93,9 @@ export function Map({ visitedPlaces }: MapProps) {
         const targeted = target.dataItem?.dataContext! as any;
         if (
           targeted.id &&
-          visitedPlaces.find((id) => id.includes(`${targeted.id}-`))
+          visitedPlaces.locations.find(
+            (record) => record.location.split("-")[0] === targeted.id
+          )
         ) {
           return am5.color("#888888");
         }
@@ -146,7 +149,12 @@ export function Map({ visitedPlaces }: MapProps) {
             "fill",
             function (fill, target) {
               const targeted = target.dataItem?.dataContext! as any;
-              if (targeted.id && visitedPlaces.includes(targeted.id)) {
+              if (
+                targeted.id &&
+                visitedPlaces.locations.find(
+                  (record) => record.location === targeted.id
+                )
+              ) {
                 return am5.color("#888888");
               }
               return fill;
@@ -162,7 +170,7 @@ export function Map({ visitedPlaces }: MapProps) {
     // Open modal with country code when state/province is clicked
     selectedCountrySeries.mapPolygons.template.events.on("click", (ev) => {
       const targetted = ev.target.dataItem?.dataContext as any;
-      const codes = targetted.id.split("-")
+      const codes = targetted.id.split("-");
       setCountryData({
         country: targetted.CNTRY,
         province: targetted.name,
@@ -208,7 +216,19 @@ export function Map({ visitedPlaces }: MapProps) {
 
   return (
     <>
-      <div id="chartdiv" className={`${styles.map}`} />
+      {visitedPlaces.isLoading && (
+        <div className={styles.mapLoaderContainer}>
+          <Spin className={styles.loader} />
+        </div>
+      )}
+      <div
+        id="chartdiv"
+        className={
+          visitedPlaces.isLoading
+            ? `${styles.map} ${styles.mapLoading}`
+            : `${styles.map}`
+        }
+      />
       <VisitedLocationModal
         showModal={showModal}
         setShowModal={setShowModal}

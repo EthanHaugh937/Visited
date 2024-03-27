@@ -44,3 +44,14 @@ export interface useFetchUserAttributesResponse {
     error: any;
     userInfo: FetchUserAttributesOutput | undefined;
 }
+
+export interface useGetUserLocationsResponse {
+    locations: locations[]
+    isLoading: boolean;
+}
+
+export interface locations {
+    arrival: string,
+    departure: string,
+    location: string;
+}

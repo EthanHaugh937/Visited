@@ -6,14 +6,20 @@ import {
   visitedCountriesPercentageCircleColours,
   wishCountriesPercentageCircleColours,
 } from "../../const";
+import { useGetUserLocationsResponse } from "../../types/types";
 
 export interface VisitedStatisticsProps {
-  visitedPlaces: Array<string>;
+  visitedPlaces: useGetUserLocationsResponse;
 }
 
 export function VisitedStatistics({ visitedPlaces }: VisitedStatisticsProps) {
-  const visitedCountries = Array.from(visitedPlaces, (id) => {
-    return id.split("-")[0];
+  const visitedCountries: string[] = [];
+  visitedPlaces.locations.map((record) => {
+    const countryCode = record.location.split("-")[0];
+    if (!visitedCountries.includes(countryCode)) {
+      visitedCountries.push(countryCode);
+    }
+    return null;
   });
 
   // Statistics container; resize depending on page size
@@ -24,6 +30,7 @@ export function VisitedStatistics({ visitedPlaces }: VisitedStatisticsProps) {
       </Col>
       <Col xs={24} sm={24} md={8} lg={8} xl={8} className="mx-2 mt-2">
         <StatisticVisualisation
+          isLoading={visitedPlaces.isLoading}
           visualisationTitle="Visited Countries"
           completeNumberOfCountries={visitedCountries.length}
           maximumNumberOfCountries={numberOfUNCountries}

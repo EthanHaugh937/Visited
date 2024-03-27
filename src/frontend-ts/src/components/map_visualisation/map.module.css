@@ -4,6 +4,22 @@
   margin-top: 8px;
 }
 
+.mapLoading {
+  display: none;
+}
+
+.mapLoaderContainer {
+  height: 500px;
+  width: 100px;
+
+  .loader {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 40%;
+    left: 50%;
+  }
+}
+
 /* Prevent map from slipping down when screen sizes reduces */
 @media screen and (max-width: 680px) {
   .map {

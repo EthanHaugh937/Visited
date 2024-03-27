@@ -2,6 +2,7 @@
   min-height: 170px;
   border-radius: 25px;
   background: #aaaaaa;
+  position: relative;
 
   .statisticVizRight {
     float: right;
@@ -14,6 +15,13 @@
   .percentageViz {
     display: flex;
     justify-content: center;
+  }
+
+  .loader {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
   }
 
   .statisticNumber {
