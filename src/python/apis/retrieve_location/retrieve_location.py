@@ -23,8 +23,20 @@ def get_user_visited_locations(authentication: Dict[str, str]):
 @authenticated
 def get_user_wish_locations(authentication: Dict[str, str]):
     try:
-        response = getUserWishLocations(authentication.get("userId"))
+        visitedResponse = getUserVisitedLocations(authentication.get("userId"))
+    except RecordDoesNotExist:
+        return make_response(jsonify({"message": "The requested resource has no visited listed to compare to!"}), 400)
+    try:
+        wishResponse = getUserWishLocations(authentication.get("userId"))
     except RecordDoesNotExist:
         return make_response(jsonify({"message": "The requested resource does not exist!"}), 400)
+    
+    wishItemsFulfilled = 0
+    
+    for visitedItem in visitedResponse:
+        for wishItem in wishResponse:
+            if wishItem.items() <= visitedItem.items():
+                wishItemsFulfilled += 1
 
-    return response
+    dataToReturn = dict(locations=wishResponse, wishItemsFulfilled=wishItemsFulfilled)
+    return make_response(dataToReturn, 200)

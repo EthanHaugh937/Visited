@@ -11,11 +11,17 @@ import { Spin } from "antd";
 
 export interface MapProps {
   visitedPlaces: useGetUserLocationsResponse;
-  setCountryData: Dispatch<SetStateAction<CountryData>>
-  setModalOpen: Dispatch<SetStateAction<boolean>>
+  wishLocations: useGetUserLocationsResponse;
+  setCountryData: Dispatch<SetStateAction<CountryData>>;
+  setModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-export function Map({ visitedPlaces, setCountryData, setModalOpen }: MapProps) {
+export function Map({
+  visitedPlaces,
+  wishLocations,
+  setCountryData,
+  setModalOpen,
+}: MapProps) {
   useLayoutEffect(() => {
     const root = am5.Root.new("chartdiv");
 
@@ -96,10 +102,10 @@ export function Map({ visitedPlaces, setCountryData, setModalOpen }: MapProps) {
       }
     );
 
-    var data = [];
-    for (var id in am5geodata_data_countries) {
+    let data = [];
+    for (const id in am5geodata_data_countries) {
       if (am5geodata_data_countries.hasOwnProperty(id)) {
-        var country = am5geodata_data_countries[id];
+        const country = am5geodata_data_countries[id];
         if (country.maps.length) {
           data.push({
             id: id,
@@ -109,6 +115,25 @@ export function Map({ visitedPlaces, setCountryData, setModalOpen }: MapProps) {
       }
     }
     countrySeries.data.setAll(data);
+
+    const legend = selectedCountrySeries.children.push(
+      am5.Legend.new(root, {
+        nameField: "name",
+        fillField: "color",
+        strokeField: "color",
+      })
+    );
+
+    legend.data.setAll([
+      {
+        name: "Vistied",
+        color: am5.color("#888888"),
+      },
+      {
+        name: "Wish List",
+        color: am5.color("#EAEAEA"),
+      },
+    ]);
 
     // Handle zoom to country and drill down
     continentSeries.mapPolygons.template.events.on("click", function (ev) {
@@ -132,7 +157,7 @@ export function Map({ visitedPlaces, setCountryData, setModalOpen }: MapProps) {
             chart
           ),
         ]).then((results) => {
-          var geodata = am5.JSONParser.parse(results[1].response as string);
+          const geodata = am5.JSONParser.parse(results[1].response as string);
           selectedCountrySeries.setAll({
             geoJSON: geodata,
           });
@@ -149,6 +174,15 @@ export function Map({ visitedPlaces, setCountryData, setModalOpen }: MapProps) {
                 )
               ) {
                 return am5.color("#888888");
+              }
+
+              if (
+                targeted.id &&
+                wishLocations.locations.find(
+                  (record) => record.location === targeted.id
+                )
+              ) {
+                return am5.color("#EAEAEA");
               }
               return fill;
             }

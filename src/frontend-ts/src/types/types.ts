@@ -55,6 +55,12 @@ export interface useGetUserLocationsResponse {
     isLoading: boolean;
 }
 
+export interface useGetUserWishLocationsResponse {
+    locations: locations[];
+    wishFulfilled: number;
+    isLoading: boolean;
+}
+
 export interface locations {
     arrival: string,
     departure: string,

@@ -40,7 +40,7 @@ export function StatisticVisualisation({
           <Row align={"middle"} wrap={false}>
             <Col flex={2}>
               <Statistic
-                value={completeNumberOfCountries}
+                value={completeNumberOfCountries || 0}
                 suffix={`/ ${maximumNumberOfCountries}`}
                 valueStyle={{ color: "#fff" }}
                 prefix={<FireOutlined />}
@@ -50,7 +50,7 @@ export function StatisticVisualisation({
             <Col flex={1} className={styles.percentageViz}>
               <Progress
                 type="circle"
-                percent={visitedCountriesPercentage}
+                percent={visitedCountriesPercentage || 0}
                 size={80}
                 strokeColor={colourGradients}
                 format={() => null}
@@ -58,7 +58,7 @@ export function StatisticVisualisation({
             </Col>
             <Col flex={2} className={styles.statisticNumber}>
               <Statistic
-                value={visitedCountriesPercentage}
+                value={visitedCountriesPercentage || 0}
                 suffix={"%"}
                 valueStyle={{ color: "#fff" }}
                 className={`${styles.statisticVizLeft} mx-2`}
