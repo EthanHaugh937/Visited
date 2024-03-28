@@ -1,5 +1,8 @@
-import { useEffect, useState } from "react";
-import { useGetUserLocations } from "../../apis/user_locations";
+import { useState } from "react";
+import {
+  useGetUserLocations,
+  useGetUserWishLocations,
+} from "../../apis/user_locations";
 import Map from "../map_visualisation/map_visualisation";
 import VisitedStatistics from "../visited_statistics/visited_statistics";
 import { Row } from "antd";
@@ -16,27 +19,27 @@ export function MapVisualisationView() {
     provinceCode: "",
   });
 
-  useEffect(() => {
-    if (showModal === false) {
-      setRefetch(true);
-    }
-  }, [showModal]);
-
-  const locations = useGetUserLocations({ refetch, setRefetch });
+  const visitedResponse = useGetUserLocations({ refetch, setRefetch });
+  const wishResponse = useGetUserWishLocations();
 
   return (
     <>
       <Row className="mb-3">
         <Map
-          visitedPlaces={locations}
+          visitedPlaces={visitedResponse}
+          wishLocations={wishResponse}
           setCountryData={setCountryData}
           setModalOpen={setShowModal}
         />
       </Row>
 
-      <VisitedStatistics visitedPlaces={locations} />
+      <VisitedStatistics
+        visitedResponse={visitedResponse}
+        wishResponse={wishResponse}
+      />
 
       <VisitedLocationModal
+        setRefetch={setRefetch}
         showModal={showModal}
         setShowModal={setShowModal}
         countryData={countryData}

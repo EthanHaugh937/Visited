@@ -20,12 +20,14 @@ export interface VisitedLocationModalProps {
   // userId: string;
   showModal: boolean;
   setShowModal: Dispatch<SetStateAction<boolean>>;
+  setRefetch: Dispatch<SetStateAction<boolean>>;
   countryData: CountryData;
 }
 
 export function VisitedLocationModal({
   showModal,
   setShowModal,
+  setRefetch,
   countryData,
 }: VisitedLocationModalProps) {
   const [form] = Form.useForm();
@@ -64,9 +66,10 @@ export function VisitedLocationModal({
           `https://ax6v5dntdj.us-east-1.awsapprunner.com/location/${apiData.locationCode}/${apiData.arrival}/${apiData.departure}`,
           {},
           config
-        ).then((resposne) => {
+        ).then(() => {
           setIsLoading(false);
           setShowModal(false);
+          setRefetch(true)
           form.resetFields();
         })
         .catch((error: AxiosError) => {

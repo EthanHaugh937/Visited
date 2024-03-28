@@ -6,15 +6,16 @@ import {
   visitedCountriesPercentageCircleColours,
   wishCountriesPercentageCircleColours,
 } from "../../const";
-import { useGetUserLocationsResponse } from "../../types/types";
+import { useGetUserLocationsResponse, useGetUserWishLocationsResponse } from "../../types/types";
 
 export interface VisitedStatisticsProps {
-  visitedPlaces: useGetUserLocationsResponse;
+  visitedResponse: useGetUserLocationsResponse;
+  wishResponse: useGetUserWishLocationsResponse;
 }
 
-export function VisitedStatistics({ visitedPlaces }: VisitedStatisticsProps) {
+export function VisitedStatistics({ visitedResponse, wishResponse }: VisitedStatisticsProps) {
   const visitedCountries: string[] = [];
-  visitedPlaces.locations.map((record) => {
+  visitedResponse.locations.map((record) => {
     const countryCode = record.location.split("-")[0];
     if (!visitedCountries.includes(countryCode)) {
       visitedCountries.push(countryCode);
@@ -30,7 +31,7 @@ export function VisitedStatistics({ visitedPlaces }: VisitedStatisticsProps) {
       </Col>
       <Col xs={24} sm={24} md={8} lg={8} xl={8} className="mx-2 mt-2">
         <StatisticVisualisation
-          isLoading={visitedPlaces.isLoading}
+          isLoading={visitedResponse.isLoading}
           visualisationTitle="Visited Countries"
           completeNumberOfCountries={visitedCountries.length}
           maximumNumberOfCountries={numberOfUNCountries}
@@ -39,9 +40,10 @@ export function VisitedStatistics({ visitedPlaces }: VisitedStatisticsProps) {
       </Col>
       <Col xs={24} sm={24} md={7} lg={7} xl={7} className="mx-2 mt-2">
         <StatisticVisualisation
+          isLoading={wishResponse.isLoading}
           visualisationTitle="Wish List Countries Visited"
-          completeNumberOfCountries={visitedCountries.length}
-          maximumNumberOfCountries={6}
+          completeNumberOfCountries={wishResponse.wishFulfilled}
+          maximumNumberOfCountries={wishResponse.locations.length}
           colourGradients={wishCountriesPercentageCircleColours}
         />
       </Col>

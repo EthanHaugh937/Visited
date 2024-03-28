@@ -10,6 +10,6 @@ export const visitedCountriesPercentageCircleColours: ProgressProps["strokeColor
 
 export const wishCountriesPercentageCircleColours: ProgressProps["strokeColor"] =
   {
-    "0%": "#45FFAA",
-    "100%": "#26E300",
+    "0%": "#EAEAEA",
+    "100%": "#FAAFAF",
   };
