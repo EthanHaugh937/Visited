@@ -1,24 +1,44 @@
 from typing import Dict, List
 from app import app, client
+from exceptions.account_exceptions import RecordDoesNotExist
+
+from azure.cosmos.container import ContainerProxy
 
 db = client.get_database_client("visitedUserTravel")
-container = db.get_container_client("userTravel")
 
-def getUserVisitedRecord(userId: str) -> List[Dict[str, any]]:
-    if item := container.query_items(
-        f"SELECT * FROM userTravel t WHERE t.userId='{userId}'",
+def getUserRecord(userId: str, container: ContainerProxy) -> Dict[str, any]:
+    item = list(container.query_items(
+        f"SELECT * FROM {container.id} t WHERE t.userId='{userId}'",
         enable_cross_partition_query=True,
-    ):
+    ))
 
-        return list(item)
+    if len(item) == 0:
+        raise RecordDoesNotExist(userId)
 
-    return []
+    return item[0]
 
 
 def deleteUserCosmosEntry(userId: str):
-    record = getUserVisitedRecord(userId)[0]
+    container = db.get_container_client("userTravel")
 
-    return container.delete_item(record.get("id"), record.get("userId"))
+    try:
+        record = getUserRecord(userId, container)
+    except RecordDoesNotExist as e:
+        return e
+
+    try:
+        container.delete_item(record.get("id"), record.get("userId"))
+    except Exception:
+        return Exception
 
 
+    container = db.get_container_client("userWishTravel")
+    wishRecord = getUserRecord(userId, container)
+
+    try: 
+        container.delete_item(wishRecord.get("id"), wishRecord.get("userId"))
+    except Exception:
+        return Exception
+    
+    return True
 

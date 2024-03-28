@@ -6,6 +6,7 @@ import boto3
 from decorators.decorators import authenticated
 from queries.account_queries import deleteUserCosmosEntry
 from azure.cosmos.exceptions import CosmosResourceNotFoundError
+from exceptions.account_exceptions import RecordDoesNotExist
 
 conn = boto3.client("cognito-idp")
 
@@ -15,6 +16,8 @@ def delete_account(authentication: Dict[str, str]):
     try:
         deleteUserCosmosEntry(authentication.get("userId"))
     except (CosmosResourceNotFoundError):
+        return make_response(jsonify({"message": "Resource does not exist"}), 400)
+    except RecordDoesNotExist:
         return make_response(jsonify({"message": "Resource does not exist"}), 400)
 
     response = conn.delete_user(AccessToken=authentication.get("token"))
