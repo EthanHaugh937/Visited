@@ -3,6 +3,7 @@ from app import app, client
 from exceptions.account_exceptions import RecordDoesNotExist
 
 from azure.cosmos.container import ContainerProxy
+from azure.cosmos.exceptions import CosmosResourceNotFoundError
 
 db = client.get_database_client("visitedUserTravel")
 
@@ -24,12 +25,12 @@ def deleteUserCosmosEntry(userId: str):
     try:
         record = getUserRecord(userId, container)
     except RecordDoesNotExist as e:
-        return e
+        raise e
 
     try:
         container.delete_item(record.get("id"), record.get("userId"))
-    except Exception:
-        return Exception
+    except CosmosResourceNotFoundError as e:
+        raise e
 
 
     container = db.get_container_client("userWishTravel")
@@ -37,8 +38,8 @@ def deleteUserCosmosEntry(userId: str):
 
     try: 
         container.delete_item(wishRecord.get("id"), wishRecord.get("userId"))
-    except Exception:
-        return Exception
+    except CosmosResourceNotFoundError as e:
+        raise e
     
     return True
 
