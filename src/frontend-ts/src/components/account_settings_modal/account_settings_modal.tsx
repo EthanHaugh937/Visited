@@ -61,10 +61,10 @@ export function AccountSettingsModal({
     <Modal
       open={showModal}
       footer={[
-        <Button onClick={handleAccountDelete} danger>
+        <Button onClick={handleAccountDelete} danger key={1}>
           Delete Account
         </Button>,
-        <Button type="primary" onClick={handleModalCancel}>
+        <Button type="primary" onClick={handleModalCancel} key={2}>
           Close
         </Button>,
       ]}

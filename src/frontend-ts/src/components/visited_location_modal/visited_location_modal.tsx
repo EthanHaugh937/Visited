@@ -66,10 +66,11 @@ export function VisitedLocationModal({
           `https://ax6v5dntdj.us-east-1.awsapprunner.com/location/${apiData.locationCode}/${apiData.arrival}/${apiData.departure}`,
           {},
           config
-        ).then(() => {
+        )
+        .then(() => {
           setIsLoading(false);
           setShowModal(false);
-          setRefetch(true)
+          setRefetch(true);
           form.resetFields();
         })
         .catch((error: AxiosError) => {
@@ -88,7 +89,9 @@ export function VisitedLocationModal({
     form.setFieldValue("province", countryData.provinceCode);
   }, [form, countryData, countriesResponse]);
 
-  const provincesResponse = useGetCountryProvinces({ country: selectedCountry });
+  const provincesResponse = useGetCountryProvinces({
+    country: selectedCountry,
+  });
 
   const handleModalCancel = () => {
     setShowModal(false);
@@ -117,7 +120,7 @@ export function VisitedLocationModal({
       .validateFields()
       .then(async (res) => {
         await getAccessToken();
-        
+
         const arrival = `${res["dates"][0]["$D"]}Z${
           res["dates"][0]["$M"] + 1
         }Z${res["dates"][0]["$y"]}`;
@@ -165,8 +168,11 @@ export function VisitedLocationModal({
         open={showModal}
         forceRender
         footer={[
-          <Button onClick={handleModalCancel}>Cancel</Button>,
+          <Button onClick={handleModalCancel} key={1}>
+            Cancel
+          </Button>,
           <Button
+            key={2}
             type={"primary"}
             loading={isLoading}
             onClick={handleFormSubmit}
