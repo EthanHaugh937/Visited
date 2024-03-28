@@ -32,8 +32,6 @@ export function CountrySelect({
     });
   });
 
-  console.log("COUNTRY CODE: ", countryCode);
-
   const handleCountryChange = (countryCode: string) => {
     countriesOptions.map((country) => {
       if (country.value === countryCode) {
