@@ -69,8 +69,6 @@ export function useGetUserWishLocations(): useGetUserWishLocationsResponse {
 
   useEffect(() => {
     setIsLoading(true);
-    console.log("ACCESS TOKEN: ", accessToken)
-    console.log("accessToken !== undefined: ", accessToken !== undefined)
     const fetchData = async () => {
       if ((accessToken !== undefined && accessToken !== "")) {
         await axios
