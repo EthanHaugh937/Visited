@@ -5,12 +5,14 @@ import {
 } from "../../apis/user_locations";
 import Map from "../map_visualisation/map_visualisation";
 import VisitedStatistics from "../visited_statistics/visited_statistics";
-import { Row } from "antd";
+import { Button, Row } from "antd";
 import { CountryData } from "../../types/types";
 import VisitedLocationModal from "../visited_location_modal/visited_location_modal";
+import WishListModal from "../wish_list_modal/wish_list_modal";
 
 export function MapVisualisationView() {
-  const [showModal, setShowModal] = useState<boolean>(false);
+  const [showVisitedModal, setShowVisitedModal] = useState<boolean>(false);
+  const [showWishModal, setShowWishModal] = useState<boolean>(false);
   const [refetch, setRefetch] = useState<boolean>(false);
   const [countryData, setCountryData] = useState<CountryData>({
     country: "",
@@ -29,9 +31,11 @@ export function MapVisualisationView() {
           visitedPlaces={visitedResponse}
           wishLocations={wishResponse}
           setCountryData={setCountryData}
-          setModalOpen={setShowModal}
+          setModalOpen={setShowVisitedModal}
         />
       </Row>
+
+      <Button onClick={() => setShowWishModal(true)}>SHOW</Button>
 
       <VisitedStatistics
         visitedResponse={visitedResponse}
@@ -40,9 +44,14 @@ export function MapVisualisationView() {
 
       <VisitedLocationModal
         setRefetch={setRefetch}
-        showModal={showModal}
-        setShowModal={setShowModal}
+        showModal={showVisitedModal}
+        setShowModal={setShowVisitedModal}
         countryData={countryData}
+      />
+
+      <WishListModal
+        showModal={showWishModal}
+        setShowModal={setShowWishModal}
       />
     </>
   );

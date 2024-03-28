@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { GetCountryProvinces, GetCountryProvincesResponse } from "../types/types";
+import {
+  GetCountryProvinces,
+  GetCountryProvincesResponse,
+} from "../types/types";
 
 export interface GetCountryProvincesProps {
   country: string;
@@ -13,6 +16,7 @@ export function useGetCountryProvinces({
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
+    setIsLoading(true);
     if (country) {
       axios
         .post("https://countriesnow.space/api/v0.1/countries/states", {
@@ -29,5 +33,5 @@ export function useGetCountryProvinces({
     }
   }, [country]);
 
-  return {provinces: provinces, isLoading: isLoading};
+  return { provinces: provinces, isLoading: isLoading };
 }
