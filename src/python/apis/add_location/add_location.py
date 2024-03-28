@@ -3,12 +3,15 @@ from flask import jsonify, make_response
 from app import app
 
 
+from exceptions.account_exceptions import RecordDoesNotExist
 from decorators.decorators import authenticated
 from queries.location_queries import (
-    insertNewRecordForUser,
-    getUserVisitedRecord,
+    insertNewVisitedRecordForUser,
+    insertNewWishRecordForUser,
+    upsertWishRecord,
     upsertVisitedRecord,
     validateVisitedEntryExists,
+    validateWishEntryExists,
 )
 
 
@@ -17,31 +20,59 @@ from queries.location_queries import (
     methods=["POST"],
 )
 @authenticated
-def add_location(authentication: Dict, countryCode: str, arrival: str, departure: str):
+def add_visited_location(
+    authentication: Dict, countryCode: str, arrival: str, departure: str
+):
     if not countryCode:
         return make_response(jsonify({"message": "Country Code not provided"}), 404)
 
     if not arrival or not departure:
         return make_response(jsonify({"message": "Visited Date not provided"}), 404)
-    
+
     userId = authentication.get("userId")
 
-    if len(getUserVisitedRecord(userId)) == 0:
-        creation_result = insertNewRecordForUser(
+    try: 
+        if validateVisitedEntryExists(
             userId,
             arrival,
             departure,
             countryCode,
-        )
+        ):
+            return make_response(jsonify({"message": "Record already exists"}), 400)
+    except RecordDoesNotExist:
+        response = insertNewVisitedRecordForUser(userId, countryCode)
+        return make_response(response, 200)
 
-        return make_response(jsonify(creation_result), 200)
+    dataToUpsert = dict(arrival=arrival, departure=departure, location=countryCode)
 
-    if validateVisitedEntryExists(
-        userId,
-        arrival,
-        departure,
-        countryCode,
-    ):
-        return make_response(jsonify({"message": "Record already exists"}), 400)
+    response = upsertVisitedRecord(userId, dataToUpsert)
 
-    return upsertVisitedRecord(userId, arrival, departure, countryCode)
+    return make_response(response, 200)
+
+
+@app.route(
+    "/wishlocation/<string:countryCode>/",
+    methods=["POST"],
+)
+@authenticated
+def add_wish_location(authentication: Dict, countryCode: str):
+    if not countryCode:
+        return make_response(jsonify({"message": "Country Code not provided"}), 404)
+
+    userId = authentication.get("userId")
+
+    try: 
+        if validateWishEntryExists(
+            userId,
+            countryCode,
+        ):
+            return make_response(jsonify({"message": "Record already exists"}), 400)
+    except RecordDoesNotExist:
+        response = insertNewWishRecordForUser(userId, countryCode)
+        return make_response(response, 200)
+
+    dataToUpsert = dict(location=countryCode)
+
+    response = upsertWishRecord(userId, dataToUpsert)
+
+    return make_response(response, 200)
