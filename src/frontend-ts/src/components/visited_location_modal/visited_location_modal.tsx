@@ -51,6 +51,11 @@ export function VisitedLocationModal({
   const countriesResponse = GetCountries();
   const { RangePicker } = DatePicker;
 
+  useEffect(() => {
+    setSelectedCountryCode(countryData.countryCode);
+    setSelectedProvinceCode(countryData.provinceCode);
+  }, [countryData.countryCode, countryData.provinceCode]);
+
   const fireApiRequest = async () => {
     if (
       apiData.arrival &&
@@ -74,11 +79,14 @@ export function VisitedLocationModal({
           setShowModal(false);
           setRefetch(true);
           form.resetFields();
+          return openSuccessNotificationWithIcon(
+            "Visited Location Item Added Successfully!"
+          );
         })
         .catch((error: AxiosError) => {
           setIsLoading(false);
           const err = error.response?.data as any;
-          return openNotificationWithIcon(err.message);
+          return openErrorNotificationWithIcon(err.message);
         });
     }
   };
@@ -128,10 +136,16 @@ export function VisitedLocationModal({
       .catch((error) => console.log(error));
   };
 
-  const openNotificationWithIcon = (error: string) => {
+  const openErrorNotificationWithIcon = (error: string) => {
     noificationApi["error"]({
       message: "There was a problem!",
       description: error,
+    });
+  };
+
+  const openSuccessNotificationWithIcon = (message: string) => {
+    noificationApi["success"]({
+      message: message,
     });
   };
 

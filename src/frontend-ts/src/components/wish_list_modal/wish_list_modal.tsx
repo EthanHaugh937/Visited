@@ -54,19 +54,26 @@ export function WishListModal({ showModal, setShowModal }: WishListModalProps) {
           setIsLoading(false);
           setShowModal(false);
           form.resetFields();
+          return openSuccessNotificationWithIcon("Wish List Item Added Successfully!")
         })
         .catch((error: AxiosError) => {
           setIsLoading(false);
           const err = error.response?.data as any;
-          return openNotificationWithIcon(err.message);
+          return openErrorNotificationWithIcon(err.message);
         });
     }
   };
 
-  const openNotificationWithIcon = (error: string) => {
+  const openErrorNotificationWithIcon = (error: string) => {
     noificationApi["error"]({
       message: "There was a problem!",
       description: error,
+    });
+  };
+
+  const openSuccessNotificationWithIcon = (message: string) => {
+    noificationApi["success"]({
+      message: message,
     });
   };
 
