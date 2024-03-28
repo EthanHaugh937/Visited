@@ -3,21 +3,20 @@ import {
   DatePicker,
   Form,
   Modal,
-  Select,
-  SelectProps,
   Space,
+  Typography,
   notification,
 } from "antd";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { GetCountries } from "../../apis/countries";
 import { AddVisitedLocationRequest, CountryData } from "../../types/types";
-import { useGetCountryProvinces } from "../../apis/countryCodes";
 import styles from "./visited_location_modal.module.css";
 import { fetchAuthSession } from "aws-amplify/auth";
 import axios, { AxiosError } from "axios";
+import CountrySelect from "../country_province_dropdown_select/country_select";
+import { ProvinceSelect } from "../country_province_dropdown_select/province_select";
 
 export interface VisitedLocationModalProps {
-  // userId: string;
   showModal: boolean;
   setShowModal: Dispatch<SetStateAction<boolean>>;
   setRefetch: Dispatch<SetStateAction<boolean>>;
@@ -31,8 +30,13 @@ export function VisitedLocationModal({
   countryData,
 }: VisitedLocationModalProps) {
   const [form] = Form.useForm();
-  const [selectedCountryCode, setSelectedCountryCode] = useState<string>("");
   const [selectedCountry, setSelectedCountry] = useState<string>("");
+  const [selectedProvinceCode, setSelectedProvinceCode] = useState<string>(
+    countryData.provinceCode
+  );
+  const [selectedCountryCode, setSelectedCountryCode] = useState<string>(
+    countryData.countryCode
+  );
   const [accessToken, setAccessToken] = useState<string | undefined>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [apiData, setApiData] = useState<AddVisitedLocationRequest>({
@@ -42,8 +46,6 @@ export function VisitedLocationModal({
     locationCode: "",
   });
 
-  const countriesOptions: SelectProps["options"] = [];
-  const provincesOptions: SelectProps["options"] = [];
   const [noificationApi, contextHolder] = notification.useNotification();
 
   const countriesResponse = GetCountries();
@@ -83,27 +85,13 @@ export function VisitedLocationModal({
 
   useEffect(() => {
     form.resetFields();
-    setSelectedCountryCode(countryData.countryCode);
     setSelectedCountry(countryData.country);
     form.setFieldValue("country", countryData.countryCode);
     form.setFieldValue("province", countryData.provinceCode);
   }, [form, countryData, countriesResponse]);
 
-  const provincesResponse = useGetCountryProvinces({
-    country: selectedCountry,
-  });
-
   const handleModalCancel = () => {
     setShowModal(false);
-  };
-
-  const handleCounteyChange = (countryCode: string) => {
-    countriesOptions.map((country) => {
-      if (country.value === countryCode) {
-        return setSelectedCountry(country.label as string);
-      }
-      return null;
-    });
   };
 
   const getAccessToken = async () => {
@@ -132,7 +120,7 @@ export function VisitedLocationModal({
           accessToken: accessToken,
           arrival: arrival,
           departure: departure,
-          locationCode: `${res.country}-${res.province}`,
+          locationCode: `${selectedCountryCode}-${selectedProvinceCode}`,
         });
 
         fireApiRequest();
@@ -146,20 +134,6 @@ export function VisitedLocationModal({
       description: error,
     });
   };
-
-  countriesResponse?.data.forEach((country) => {
-    countriesOptions.push({
-      label: country.name,
-      value: country.Iso2,
-    });
-  });
-
-  provincesResponse?.provinces?.data?.states.forEach((province) => {
-    provincesOptions.push({
-      label: province.name,
-      value: province.state_code,
-    });
-  });
 
   return (
     <>
@@ -181,6 +155,7 @@ export function VisitedLocationModal({
           </Button>,
         ]}
       >
+        <Typography.Title level={5}>Add Visited Location Item</Typography.Title>
         <Form form={form}>
           <Form.Item label="Country">
             <Space.Compact>
@@ -190,12 +165,10 @@ export function VisitedLocationModal({
                 noStyle
                 rules={[{ required: true, message: "Country is required" }]}
               >
-                <Select
-                  onChange={handleCounteyChange}
-                  className={styles.locationSelect}
-                  placeholder="Select Country"
-                  options={countriesOptions}
-                  value={selectedCountryCode}
+                <CountrySelect
+                  countryCode={countryData.countryCode}
+                  setSelectedCountry={setSelectedCountry}
+                  setSelectedCountryCode={setSelectedCountryCode}
                 />
               </Form.Item>
               <Form.Item
@@ -204,12 +177,10 @@ export function VisitedLocationModal({
                 noStyle
                 rules={[{ required: true, message: "Province is required" }]}
               >
-                <Select
-                  className={styles.locationSelect}
-                  placeholder="Select Province"
-                  options={provincesOptions}
-                  value={selectedCountryCode}
-                  loading={provincesResponse?.isLoading}
+                <ProvinceSelect
+                  selectedCountry={selectedCountry}
+                  selectedProvinceCode={countryData.provinceCode}
+                  setSelectedProvinceCode={setSelectedProvinceCode}
                 />
               </Form.Item>
             </Space.Compact>
