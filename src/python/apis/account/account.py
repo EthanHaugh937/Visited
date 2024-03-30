@@ -1,6 +1,6 @@
 from typing import Dict
 from flask import jsonify, make_response
-from app import app, client
+from app import app
 import boto3
 
 from decorators.decorators import authenticated
@@ -15,10 +15,8 @@ conn = boto3.client("cognito-idp")
 def delete_account(authentication: Dict[str, str]):
     try:
         deleteUserCosmosEntry(authentication.get("userId"))
-    except (CosmosResourceNotFoundError):
-        return make_response(jsonify({"message": "Resource does not exist"}), 400)
-    except RecordDoesNotExist:
-        return make_response(jsonify({"message": "Resource does not exist"}), 400)
+    except (CosmosResourceNotFoundError, RecordDoesNotExist):
+        pass
 
     response = conn.delete_user(AccessToken=authentication.get("token"))
 
