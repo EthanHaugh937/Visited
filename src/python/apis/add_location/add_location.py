@@ -40,7 +40,7 @@ def add_visited_location(
         ):
             return make_response(jsonify({"message": "Record already exists"}), 400)
     except RecordDoesNotExist:
-        response = insertNewVisitedRecordForUser(userId, countryCode)
+        response = insertNewVisitedRecordForUser(userId, arrival, departure, countryCode)
         return make_response(response, 200)
 
     dataToUpsert = dict(arrival=arrival, departure=departure, location=countryCode)
@@ -51,7 +51,7 @@ def add_visited_location(
 
 
 @app.route(
-    "/wishlocation/<string:countryCode>/",
+    "/wishlocation/<string:countryCode>",
     methods=["POST"],
 )
 @authenticated
