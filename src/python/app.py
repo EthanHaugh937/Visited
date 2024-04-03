@@ -25,3 +25,4 @@ if __name__ == "__main__":
 from apis.add_location.add_location import add_visited_location, add_wish_location
 from apis.retrieve_location.retrieve_location import get_user_visited_locations, get_user_wish_locations
 from apis.account.account import delete_account
+from apis.delete_location.delete_location import delete_visited_location

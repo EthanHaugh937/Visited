@@ -4,6 +4,8 @@ from app import client
 from queries.account_queries import getUserRecord
 from exceptions.account_exceptions import RecordDoesNotExist
 
+from azure.cosmos.container import ContainerProxy
+
 db = client.get_database_client("visitedUserTravel")
 
 
@@ -13,7 +15,7 @@ def validateVisitedEntryExists(
     container = db.get_container_client("userTravel")
 
     try:
-        visitedLocations = getUserRecord(userId, container).get("visited")
+        visitedLocations = getUserRecord(userId, container).get("locations")
     except RecordDoesNotExist as e:
         raise e
 
@@ -33,7 +35,7 @@ def validateVisitedEntryExists(
 def validateWishEntryExists(userId: str, locationCode: str) -> bool:
     container = db.get_container_client("userWishTravel")
 
-    try: 
+    try:
         wishLocations = getUserRecord(userId, container)
     except RecordDoesNotExist as e:
         raise e
@@ -42,7 +44,7 @@ def validateWishEntryExists(userId: str, locationCode: str) -> bool:
         "location": locationCode,
     }
 
-    for record in wishLocations.get("visited"):
+    for record in wishLocations.get("locations"):
         if recordToSearchFor.items() <= record.items():
             return True
 
@@ -57,7 +59,7 @@ def insertNewVisitedRecordForUser(
     insertInfo = {
         "id": str(uuid.uuid4()),
         "userId": userId,
-        "visited": [
+        "locations": [
             {
                 "id": str(uuid.uuid4()),
                 "arrival": arrival,
@@ -76,7 +78,7 @@ def insertNewWishRecordForUser(userId: str, locationCode: str) -> Dict[str, str]
     insertInfo = {
         "id": str(uuid.uuid4()),
         "userId": userId,
-        "visited": [{"id": str(uuid.uuid4()), "location": locationCode}],
+        "locations": [{"id": str(uuid.uuid4()), "location": locationCode}],
     }
 
     return container.create_item(insertInfo)
@@ -89,7 +91,7 @@ def upsertVisitedRecord(userId: str, dataToUpsert: Dict[str, str]) -> Dict[str, 
     except RecordDoesNotExist as e:
         raise e
 
-    userRecord.get("visited").append(dataToUpsert)
+    userRecord.get("locations").append(dataToUpsert)
 
     return container.upsert_item(body=userRecord)
 
@@ -102,7 +104,7 @@ def upsertWishRecord(userId: str, dataToUpsert: Dict[str, str]) -> Dict[str, any
     except RecordDoesNotExist as e:
         raise e
 
-    userRecord.get("visited").append(dataToUpsert)
+    userRecord.get("locations").append(dataToUpsert)
 
     return container.upsert_item(body=userRecord)
 
@@ -111,7 +113,7 @@ def getUserVisitedLocations(userId: str) -> List[Dict[str, str]]:
     container = db.get_container_client("userTravel")
     userRecord = getUserRecord(userId, container)
 
-    return userRecord.get("visited")
+    return userRecord.get("locations")
 
 
 def getUserWishLocations(userId: str) -> List[Dict[str, str]]:
@@ -123,6 +125,19 @@ def getUserWishLocations(userId: str) -> List[Dict[str, str]]:
         raise e
 
     if userRecord is not None:
-        return userRecord.get("visited")
+        return userRecord.get("locations")
 
     return []
+
+
+def deleteUserLocation(userId: str, recordId: str, container: ContainerProxy):
+    try:
+        userRecord = getUserRecord(userId, container)
+    except RecordDoesNotExist as e:
+        raise e
+
+    userRecord["locations"] = [
+        record for record in userRecord["locations"] if record.get("id") != recordId
+    ]
+
+    return container.upsert_item(body=userRecord)
