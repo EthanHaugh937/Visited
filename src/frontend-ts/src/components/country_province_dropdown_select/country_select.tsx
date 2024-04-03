@@ -1,4 +1,4 @@
-import {Select, SelectProps } from "antd";
+import { Select, SelectProps } from "antd";
 import { GetCountries } from "../../apis/countries";
 import { Dispatch, SetStateAction } from "react";
 import styles from "./country_select.module.css";
@@ -37,6 +37,11 @@ export function CountrySelect({
 
   return (
     <Select
+      showSearch
+      filterOption={(input, option) => {
+        const label = option?.label as string;
+        return label.includes(input);
+      }}
       onChange={handleCountryChange}
       className={styles.locationSelect}
       placeholder="Select Country"
