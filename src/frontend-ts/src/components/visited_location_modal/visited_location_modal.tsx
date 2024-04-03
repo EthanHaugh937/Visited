@@ -154,6 +154,7 @@ export function VisitedLocationModal({
       {contextHolder}
       <Modal
         open={showModal}
+        onCancel={handleModalCancel}
         forceRender
         footer={[
           <Button onClick={handleModalCancel} key={1}>
@@ -193,7 +194,7 @@ export function VisitedLocationModal({
               >
                 <ProvinceSelect
                   selectedCountry={selectedCountry}
-                  selectedProvinceCode={countryData.provinceCode}
+                  selectedProvinceCode={selectedProvinceCode}
                   setSelectedProvinceCode={setSelectedProvinceCode}
                 />
               </Form.Item>
