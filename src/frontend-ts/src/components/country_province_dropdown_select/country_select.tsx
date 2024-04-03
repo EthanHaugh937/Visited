@@ -1,6 +1,6 @@
-import { Form, Select, SelectProps } from "antd";
+import {Select, SelectProps } from "antd";
 import { GetCountries } from "../../apis/countries";
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { Dispatch, SetStateAction } from "react";
 import styles from "./country_select.module.css";
 
 export interface CountryProvinceSelectProps {
@@ -14,14 +14,7 @@ export function CountrySelect({
   setSelectedCountryCode,
   countryCode,
 }: CountryProvinceSelectProps) {
-  const [form] = Form.useForm();
-
   const countriesResponse = GetCountries();
-
-  useEffect(() => {
-    form.resetFields();
-    form.setFieldValue("country", countryCode);
-  }, [form, countryCode]);
 
   const countriesOptions: SelectProps["options"] = [];
 

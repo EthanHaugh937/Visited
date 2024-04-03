@@ -30,7 +30,7 @@ export function VisitedLocationModal({
   countryData,
 }: VisitedLocationModalProps) {
   const [form] = Form.useForm();
-  const [selectedCountry, setSelectedCountry] = useState<string>("");
+  const [selectedCountry, setSelectedCountry] = useState<string>(countryData.countryCode);
   const [selectedProvinceCode, setSelectedProvinceCode] = useState<string>(
     countryData.provinceCode
   );
@@ -153,6 +153,7 @@ export function VisitedLocationModal({
     <>
       {contextHolder}
       <Modal
+        destroyOnClose
         open={showModal}
         onCancel={handleModalCancel}
         forceRender
@@ -181,7 +182,7 @@ export function VisitedLocationModal({
                 rules={[{ required: true, message: "Country is required" }]}
               >
                 <CountrySelect
-                  countryCode={countryData.countryCode}
+                  countryCode={selectedCountryCode}
                   setSelectedCountry={setSelectedCountry}
                   setSelectedCountryCode={setSelectedCountryCode}
                 />
