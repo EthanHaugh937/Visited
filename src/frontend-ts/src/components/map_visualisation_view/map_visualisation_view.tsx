@@ -36,7 +36,6 @@ export function MapVisualisationView() {
         />
       </Row>
 
-      <Button onClick={() => setShowWishModal(true)}>SHOW</Button>
       <FloatButton.Group trigger="hover" icon={<CloudOutlined />}>
         <FloatButton
           onClick={() => setShowWishModal(true)}
