@@ -206,7 +206,7 @@ export function VisitedLocationModal({
             noStyle
             rules={[{ required: true, message: "Date is required" }]}
           >
-            <RangePicker showTime className={styles.rangePicker} />
+            <RangePicker className={styles.rangePicker} />
           </Form.Item>
         </Form>
       </Modal>

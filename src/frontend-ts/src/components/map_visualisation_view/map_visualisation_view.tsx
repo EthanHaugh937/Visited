@@ -5,10 +5,11 @@ import {
 } from "../../apis/user_locations";
 import Map from "../map_visualisation/map_visualisation";
 import VisitedStatistics from "../visited_statistics/visited_statistics";
-import { Button, Row } from "antd";
+import { Button, FloatButton, Row } from "antd";
 import { CountryData } from "../../types/types";
 import VisitedLocationModal from "../visited_location_modal/visited_location_modal";
 import WishListModal from "../wish_list_modal/wish_list_modal";
+import { BulbOutlined, CloudOutlined, PlusOutlined } from "@ant-design/icons";
 
 export function MapVisualisationView() {
   const [showVisitedModal, setShowVisitedModal] = useState<boolean>(false);
@@ -36,6 +37,16 @@ export function MapVisualisationView() {
       </Row>
 
       <Button onClick={() => setShowWishModal(true)}>SHOW</Button>
+      <FloatButton.Group trigger="hover" icon={<CloudOutlined />}>
+        <FloatButton
+          onClick={() => setShowWishModal(true)}
+          icon={<BulbOutlined />}
+        />
+        <FloatButton
+          onClick={() => setShowVisitedModal(true)}
+          icon={<PlusOutlined />}
+        />
+      </FloatButton.Group>
 
       <VisitedStatistics
         visitedResponse={visitedResponse}
