@@ -35,7 +35,7 @@ def get_user_wish_locations(authentication: Dict[str, str]):
     
     for visitedItem in visitedResponse:
         for wishItem in wishResponse:
-            if wishItem.items() <= visitedItem.items():
+            if set(wishItem.values()) & set(visitedItem.values()):
                 wishItemsFulfilled += 1
 
     dataToReturn = dict(locations=wishResponse, wishItemsFulfilled=wishItemsFulfilled)

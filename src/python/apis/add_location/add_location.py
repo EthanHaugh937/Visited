@@ -1,4 +1,5 @@
 from ast import Dict
+import uuid
 from flask import jsonify, make_response
 from app import app
 
@@ -43,7 +44,7 @@ def add_visited_location(
         response = insertNewVisitedRecordForUser(userId, arrival, departure, countryCode)
         return make_response(response, 200)
 
-    dataToUpsert = dict(arrival=arrival, departure=departure, location=countryCode)
+    dataToUpsert = dict(id=str(uuid.uuid4()), arrival=arrival, departure=departure, location=countryCode)
 
     response = upsertVisitedRecord(userId, dataToUpsert)
 
@@ -71,7 +72,7 @@ def add_wish_location(authentication: Dict, countryCode: str):
         response = insertNewWishRecordForUser(userId, countryCode)
         return make_response(response, 200)
 
-    dataToUpsert = dict(location=countryCode)
+    dataToUpsert = dict(id=str(uuid.uuid4()), location=countryCode)
 
     response = upsertWishRecord(userId, dataToUpsert)
 
