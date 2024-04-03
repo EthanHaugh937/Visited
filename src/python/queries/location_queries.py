@@ -23,8 +23,9 @@ def validateVisitedEntryExists(
         "location": locationCode,
     }
 
-    if recordToSearchFor in visitedLocations:
-        return True
+    for record in visitedLocations:
+        if recordToSearchFor.items() <= record.items():
+            return True
 
     return False
 
@@ -32,14 +33,18 @@ def validateVisitedEntryExists(
 def validateWishEntryExists(userId: str, locationCode: str) -> bool:
     container = db.get_container_client("userWishTravel")
 
-    wishLocations = getUserRecord(userId, container).get("visited")
+    try: 
+        wishLocations = getUserRecord(userId, container)
+    except RecordDoesNotExist as e:
+        raise e
 
     recordToSearchFor = {
         "location": locationCode,
     }
 
-    if recordToSearchFor in wishLocations:
-        return True
+    for record in wishLocations.get("visited"):
+        if recordToSearchFor.items() <= record.items():
+            return True
 
     return False
 
@@ -54,6 +59,7 @@ def insertNewVisitedRecordForUser(
         "userId": userId,
         "visited": [
             {
+                "id": str(uuid.uuid4()),
                 "arrival": arrival,
                 "departure": departure,
                 "location": locationCode,
@@ -70,7 +76,7 @@ def insertNewWishRecordForUser(userId: str, locationCode: str) -> Dict[str, str]
     insertInfo = {
         "id": str(uuid.uuid4()),
         "userId": userId,
-        "visited": [{"location": locationCode}],
+        "visited": [{"id": str(uuid.uuid4()), "location": locationCode}],
     }
 
     return container.create_item(insertInfo)
@@ -87,9 +93,10 @@ def upsertVisitedRecord(userId: str, dataToUpsert: Dict[str, str]) -> Dict[str, 
 
     return container.upsert_item(body=userRecord)
 
+
 def upsertWishRecord(userId: str, dataToUpsert: Dict[str, str]) -> Dict[str, any]:
     container = db.get_container_client("userWishTravel")
-    
+
     try:
         userRecord = getUserRecord(userId, container)
     except RecordDoesNotExist as e:
@@ -115,7 +122,7 @@ def getUserWishLocations(userId: str) -> List[Dict[str, str]]:
     except RecordDoesNotExist as e:
         raise e
 
-    if userRecord is not None: 
+    if userRecord is not None:
         return userRecord.get("visited")
-    
+
     return []

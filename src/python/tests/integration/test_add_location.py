@@ -8,7 +8,14 @@ def test_add_visited_location(client_app, user):
 
     assert response.status_code == 200
     assert len(response.json.get("visited")) == 1
-    assert response.json.get("visited") == [{'arrival': '20Z3Z2024', 'departure': '25Z3Z2024', 'location': 'IE-RN'}]
+    assert (
+        response.json.get("visited")[0].items()
+        >= {
+            "arrival": "20Z3Z2024",
+            "departure": "25Z3Z2024",
+            "location": "IE-RN",
+        }.items()
+    )
 
     response = client_app.get(
         "/location",
@@ -17,7 +24,14 @@ def test_add_visited_location(client_app, user):
         },
     )
 
-    assert response.json == [{'arrival': '20Z3Z2024', 'departure': '25Z3Z2024', 'location': 'IE-RN'}]
+    assert (
+        response.json[0].items()
+        >= {
+            "arrival": "20Z3Z2024",
+            "departure": "25Z3Z2024",
+            "location": "IE-RN",
+        }.items()
+    )
 
 
 def test_add_wish_location(client_app, user):
@@ -30,7 +44,7 @@ def test_add_wish_location(client_app, user):
 
     assert response.status_code == 200
     assert len(response.json.get("visited")) == 1
-    assert response.json.get("visited") == [{'location': 'IE-RN'}]
+    assert response.json.get("visited")[0].items() >= {"location": "IE-RN"}.items()
 
     response = client_app.get(
         "/wishlocation",
@@ -40,5 +54,5 @@ def test_add_wish_location(client_app, user):
     )
 
     assert response.status_code == 200
-    assert response.json == {'locations': [{'location': 'IE-RN'}], 'wishItemsFulfilled': 1}
-
+    assert response.json.get("locations")[0].items() >= {"location": "IE-RN"}.items()
+    assert response.json.get("wishItemsFulfilled") == 1
