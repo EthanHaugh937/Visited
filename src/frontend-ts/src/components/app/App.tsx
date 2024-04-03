@@ -6,25 +6,26 @@ import { Amplify } from "aws-amplify";
 import { Authenticator } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
 import awsconfig from "../../aws-exports";
+import styles from "./app.module.css";
 
 Amplify.configure(awsconfig);
 
 function App() {
   return (
-    <Authenticator className="mt-4">
-      <Row>
+    <Authenticator>
+      <Row className={styles.header}>
         <Col span={24}>
-        <NavigationHeader />
+          <NavigationHeader />
         </Col>
       </Row>
       <Row>
         <Col span={24}>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<MapVisualisationView />} />
-            <Route path="/nothome" element={<h1>Goodbye World</h1>} />
-          </Routes>
-        </BrowserRouter>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<MapVisualisationView />} />
+              <Route path="/nothome" element={<h1>Goodbye World</h1>} />
+            </Routes>
+          </BrowserRouter>
         </Col>
       </Row>
     </Authenticator>
