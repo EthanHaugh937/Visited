@@ -19,6 +19,9 @@ def validateVisitedEntryExists(
     except RecordDoesNotExist as e:
         raise e
 
+    if visitedLocations == None or visitedLocations == []:
+        return False
+
     recordToSearchFor = {
         "arrival": arrival,
         "departure": departure,
@@ -39,6 +42,9 @@ def validateWishEntryExists(userId: str, locationCode: str) -> bool:
         wishLocations = getUserRecord(userId, container)
     except RecordDoesNotExist as e:
         raise e
+
+    if wishLocations == None or wishLocations == []:
+        return False
 
     recordToSearchFor = {
         "location": locationCode,
