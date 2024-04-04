@@ -117,3 +117,24 @@ export function UseDeleteUserWishLocation({
       console.log(error);
     });
 }
+
+export function UseDeleteUserVisitedLocation({
+  recordId,
+}: useDeleteUserWishLocationsProps) {
+  return fetchAuthSession()
+    .then((response) => {
+      axios
+        .delete(
+          `https://ax6v5dntdj.us-east-1.awsapprunner.com/location/${recordId}`,
+          {
+            headers: {
+              Authorization: `Bearer: ${response.tokens?.accessToken.toString()}`,
+            },
+          }
+        )
+        .catch((error) => console.log(error));
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}

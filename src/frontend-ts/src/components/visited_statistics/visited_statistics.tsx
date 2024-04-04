@@ -1,4 +1,4 @@
-import { Col, Modal, Row } from "antd";
+import { Button, Col, Modal, Row } from "antd";
 import styles from "./visited_statistics.module.css";
 import { StatisticVisualisation } from "../statistics/countries_visited/countries_visited";
 import {
@@ -14,6 +14,7 @@ import {
 import EditableList from "../editable_list/editable_list";
 import { useState } from "react";
 import WishListTable from "../wish_list_table/wish_list_table";
+import VisitedListTable from "../visited_list_table/visited_list_table";
 
 export interface VisitedStatisticsProps {
   visitedResponse: useGetUserLocationsResponse;
@@ -79,9 +80,9 @@ export function VisitedStatistics({
         open={visitedModalOpen}
         onCancel={handleModalCancel}
       >
-        Test
+        <VisitedListTable />
       </Modal>
-      <Modal destroyOnClose open={wishModalOpen} onCancel={handleModalCancel}>
+      <Modal destroyOnClose open={wishModalOpen} onCancel={handleModalCancel} footer={<Button onClick={() => handleModalCancel}>Close</Button>}>
         <WishListTable />
       </Modal>
     </>
