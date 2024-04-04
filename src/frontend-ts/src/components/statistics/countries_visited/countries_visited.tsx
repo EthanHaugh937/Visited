@@ -1,5 +1,4 @@
-import { Col, Progress, Row, Spin, Statistic } from "antd";
-import Title from "antd/es/typography/Title";
+import { Col, Progress, Row, Spin, Statistic, Typography } from "antd";
 import styles from "./countries_visited.module.css";
 import { FireOutlined } from "@ant-design/icons";
 import { ProgressProps } from "antd/es/progress/progress";
@@ -34,9 +33,13 @@ export function StatisticVisualisation({
         <Spin className={styles.loader} />
       ) : (
         <>
-          <Title level={4} className="statisticsTitle" type="secondary">
+          <Typography.Title
+            level={4}
+            className="statisticsTitle"
+            type="secondary"
+          >
             {visualisationTitle}
-          </Title>
+          </Typography.Title>
           <Row align={"middle"} wrap={false}>
             <Col flex={2}>
               <Statistic

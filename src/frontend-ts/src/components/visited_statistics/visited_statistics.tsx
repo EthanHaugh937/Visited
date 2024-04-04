@@ -1,4 +1,4 @@
-import { Button, Col, List, Row } from "antd";
+import { Col, Modal, Row } from "antd";
 import styles from "./visited_statistics.module.css";
 import { StatisticVisualisation } from "../statistics/countries_visited/countries_visited";
 import {
@@ -7,10 +7,13 @@ import {
   wishCountriesPercentageCircleColours,
 } from "../../const";
 import {
+  ListData,
   useGetUserLocationsResponse,
   useGetUserWishLocationsResponse,
 } from "../../types/types";
-import { EditOutlined } from "@ant-design/icons";
+import EditableList from "../editable_list/editable_list";
+import { useState } from "react";
+import WishListTable from "../wish_list_table/wish_list_table";
 
 export interface VisitedStatisticsProps {
   visitedResponse: useGetUserLocationsResponse;
@@ -21,11 +24,13 @@ export function VisitedStatistics({
   visitedResponse,
   wishResponse,
 }: VisitedStatisticsProps) {
+  const [visitedModalOpen, setVisitedModalOpen] = useState<boolean>(false);
+  const [wishModalOpen, setWishModalOpen] = useState<boolean>(false);
   const visitedCountries: string[] = [];
 
-  const data = [
-    { item: "Visited Places", value: "visited" },
-    { item: "Wish list", value: "wish" },
+  const data: ListData[] = [
+    { key: "visited", value: "Visited Places", action: setVisitedModalOpen },
+    { key: "wish", value: "Wish List", action: setWishModalOpen },
   ];
 
   visitedResponse.locations.map((record) => {
@@ -36,51 +41,50 @@ export function VisitedStatistics({
     return null;
   });
 
+  const handleModalCancel = () => {
+    setVisitedModalOpen(false);
+    setWishModalOpen(false);
+  };
+
   // Statistics container; resize depending on page size
   return (
-    <Row className={styles.statisticsContainer} wrap={false}>
-      <Col xs={24} sm={24} md={7} lg={7} xl={8} className="mx-2 mt-2">
-        <div className={styles.card}>
-          <List
-            dataSource={data}
-            renderItem={(item) => (
-              <List.Item
-                actions={[
-                  <Button
-                    shape="circle"
-                    icon={<EditOutlined />}
-                    ghost
-                    onClick={() => {
-                      console.log(item.value);
-                    }}
-                  ></Button>,
-                ]}
-              >
-                {item.item}
-              </List.Item>
-            )}
+    <>
+      <Row className={styles.statisticsContainer} wrap={false}>
+        <Col xs={24} sm={24} md={7} lg={7} xl={8} className="mx-2 mt-2">
+          <div className={styles.card}>
+            <EditableList dataSource={data} />
+          </div>
+        </Col>
+        <Col xs={24} sm={24} md={8} lg={8} xl={8} className="mx-2 mt-2">
+          <StatisticVisualisation
+            isLoading={visitedResponse.isLoading}
+            visualisationTitle="Visited Countries"
+            completeNumberOfCountries={visitedCountries.length}
+            maximumNumberOfCountries={numberOfUNCountries}
+            colourGradients={visitedCountriesPercentageCircleColours}
           />
-        </div>
-      </Col>
-      <Col xs={24} sm={24} md={8} lg={8} xl={8} className="mx-2 mt-2">
-        <StatisticVisualisation
-          isLoading={visitedResponse.isLoading}
-          visualisationTitle="Visited Countries"
-          completeNumberOfCountries={visitedCountries.length}
-          maximumNumberOfCountries={numberOfUNCountries}
-          colourGradients={visitedCountriesPercentageCircleColours}
-        />
-      </Col>
-      <Col xs={24} sm={24} md={7} lg={7} xl={7} className="mx-2 mt-2">
-        <StatisticVisualisation
-          isLoading={wishResponse.isLoading}
-          visualisationTitle="Wish List Countries Visited"
-          completeNumberOfCountries={wishResponse.wishFulfilled}
-          maximumNumberOfCountries={wishResponse.locations.length}
-          colourGradients={wishCountriesPercentageCircleColours}
-        />
-      </Col>
-    </Row>
+        </Col>
+        <Col xs={24} sm={24} md={7} lg={7} xl={7} className="mx-2 mt-2">
+          <StatisticVisualisation
+            isLoading={wishResponse.isLoading}
+            visualisationTitle="Wish List Countries Visited"
+            completeNumberOfCountries={wishResponse.wishFulfilled}
+            maximumNumberOfCountries={wishResponse.locations.length}
+            colourGradients={wishCountriesPercentageCircleColours}
+          />
+        </Col>
+      </Row>
+      <Modal
+        destroyOnClose
+        open={visitedModalOpen}
+        onCancel={handleModalCancel}
+      >
+        Test
+      </Modal>
+      <Modal destroyOnClose open={wishModalOpen} onCancel={handleModalCancel}>
+        <WishListTable />
+      </Modal>
+    </>
   );
 }
 

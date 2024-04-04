@@ -9,8 +9,9 @@ import { ProvinceSelect } from "../country_province_dropdown_select/province_sel
 export interface WishListModalProps {
   showModal: boolean;
   setShowModal: Dispatch<SetStateAction<boolean>>;
+  setRefetch: Dispatch<SetStateAction<boolean>>
 }
-export function WishListModal({ showModal, setShowModal }: WishListModalProps) {
+export function WishListModal({ showModal, setShowModal, setRefetch }: WishListModalProps) {
   const [form] = Form.useForm();
   const [accessToken, setAccessToken] = useState<string | undefined>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -54,13 +55,14 @@ export function WishListModal({ showModal, setShowModal }: WishListModalProps) {
 
       await axios
         .post(
-          "http://ax6v5dntdj.us-east-1.awsapprunner.com/wishlocation",
+          "https://ax6v5dntdj.us-east-1.awsapprunner.com/wishlocation",
           body,
           config
         )
         .then(() => {
           setIsLoading(false);
           setShowModal(false);
+          setRefetch(true)
           form.resetFields();
           return openSuccessNotificationWithIcon(
             "Wish List Item Added Successfully!"
