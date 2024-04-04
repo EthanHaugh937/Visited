@@ -80,7 +80,6 @@ export function VisitedStatistics({
         onCancel={handleModalCancel}
         footer={<Button onClick={handleModalCancel}>Close</Button>}
       >
-        Test
       </Modal>
       <Modal
         destroyOnClose
