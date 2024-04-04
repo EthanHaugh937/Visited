@@ -14,6 +14,7 @@ import {
 import EditableList from "../editable_list/editable_list";
 import { useState } from "react";
 import WishListTable from "../wish_list_table/wish_list_table";
+import VisitedListTable from "../visited_list_table/visited_list_table";
 
 export interface VisitedStatisticsProps {
   visitedResponse: useGetUserLocationsResponse;
@@ -80,6 +81,7 @@ export function VisitedStatistics({
         onCancel={handleModalCancel}
         footer={<Button onClick={handleModalCancel}>Close</Button>}
       >
+        <VisitedListTable />
       </Modal>
       <Modal
         destroyOnClose
