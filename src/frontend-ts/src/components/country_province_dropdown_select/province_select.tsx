@@ -33,7 +33,6 @@ export function ProvinceSelect({
   const handleSelectChange = (provinceCode: string) => {
     provincesOptions.map((province) => {
       if (province.value === provinceCode) {
-        console.log(province)
         setSelectedProvinceCode(provinceCode)
         return setSelectedProvince(province.label as string)
       }

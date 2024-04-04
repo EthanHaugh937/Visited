@@ -50,11 +50,11 @@ export function WishListModal({ showModal, setShowModal }: WishListModalProps) {
         provinceCode: selectedProvinceCode,
         country: selectedCountry,
         province: selectedProvince,
-      }
+      };
 
       await axios
         .post(
-          'http://localhost:5000/wishlocation',
+          "http://ax6v5dntdj.us-east-1.awsapprunner.com/wishlocation",
           body,
           config
         )

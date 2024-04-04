@@ -75,7 +75,11 @@ export function VisitedLocationModal({
       };
 
       await axios
-        .post(`http://localhost:5000/location`, apiData, config)
+        .post(
+          "https://ax6v5dntdj.us-east-1.awsapprunner.com/location",
+          apiData,
+          config
+        )
         .then(() => {
           setIsLoading(false);
           setShowModal(false);
