@@ -1,7 +1,7 @@
 import { useState } from "react";
 import {
   useGetUserLocations,
-  useGetUserWishLocations,
+  UseGetUserWishLocations,
 } from "../../apis/user_locations";
 import Map from "../map_visualisation/map_visualisation";
 import VisitedStatistics from "../visited_statistics/visited_statistics";
@@ -23,7 +23,7 @@ export function MapVisualisationView() {
   });
 
   const visitedResponse = useGetUserLocations({ refetch, setRefetch });
-  const wishResponse = useGetUserWishLocations();
+  const wishResponse = UseGetUserWishLocations();
 
   return (
     <>

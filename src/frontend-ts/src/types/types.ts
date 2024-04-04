@@ -1,4 +1,5 @@
 import { FetchUserAttributesOutput } from "aws-amplify/auth";
+import { Dispatch, SetStateAction } from "react";
 
 export interface CountryData {
   country: string;
@@ -69,7 +70,16 @@ export interface useGetUserWishLocationsResponse {
 }
 
 export interface locations {
-  arrival: string;
-  departure: string;
+  arrival?: string;
+  departure?: string;
+  id: string;
   location: string;
+  country: string;
+  province: string;
+}
+
+export interface ListData {
+  key: string;
+  value: string;
+  action: Dispatch<SetStateAction<boolean>>
 }

@@ -54,7 +54,7 @@ export function WishListModal({ showModal, setShowModal }: WishListModalProps) {
 
       await axios
         .post(
-          "http://ax6v5dntdj.us-east-1.awsapprunner.com/wishlocation",
+          "https://ax6v5dntdj.us-east-1.awsapprunner.com/wishlocation",
           body,
           config
         )

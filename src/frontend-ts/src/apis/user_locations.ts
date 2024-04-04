@@ -53,7 +53,7 @@ export function useGetUserLocations({
   return { locations: locations || [], isLoading: isLoading };
 }
 
-export function useGetUserWishLocations(): useGetUserWishLocationsResponse {
+export function UseGetUserWishLocations(refetch?: boolean): useGetUserWishLocationsResponse {
   const [accessToken, setAccessToken] = useState<string>();
   const [locations, setLocations] = useState<locations[]>();
   const [wishFulfilled, setWishFulfileld] = useState<number>(0);
@@ -70,7 +70,7 @@ export function useGetUserWishLocations(): useGetUserWishLocationsResponse {
   useEffect(() => {
     setIsLoading(true);
     const fetchData = async () => {
-      if ((accessToken !== undefined && accessToken !== "")) {
+      if (accessToken !== undefined && accessToken !== "") {
         await axios
           .get("https://ax6v5dntdj.us-east-1.awsapprunner.com/wishlocation", {
             headers: { Authorization: `Bearer ${accessToken}` },
@@ -86,11 +86,33 @@ export function useGetUserWishLocations(): useGetUserWishLocationsResponse {
       }
     };
     fetchData();
-  }, [accessToken]);
+  }, [accessToken, refetch]);
 
   return {
     locations: locations || [],
     wishFulfilled: wishFulfilled,
     isLoading: isLoading,
   };
+}
+
+export interface useDeleteUserWishLocationsProps {
+  recordId: string;
+}
+
+export function UseDeleteUserWishLocation({
+  recordId,
+}: useDeleteUserWishLocationsProps) {
+  return fetchAuthSession()
+    .then((response) => {
+      axios
+        .delete(`https://ax6v5dntdj.us-east-1.awsapprunner.com/wishlocation/${recordId}`, {
+          headers: {
+            Authorization: `Bearer: ${response.tokens?.accessToken.toString()}`,
+          },
+        })
+        .catch((error) => console.log(error))
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 }
