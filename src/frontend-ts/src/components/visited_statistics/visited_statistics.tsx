@@ -1,4 +1,4 @@
-import { Col, Modal, Row } from "antd";
+import { Button, Col, Modal, Row } from "antd";
 import styles from "./visited_statistics.module.css";
 import { StatisticVisualisation } from "../statistics/countries_visited/countries_visited";
 import {
@@ -78,10 +78,16 @@ export function VisitedStatistics({
         destroyOnClose
         open={visitedModalOpen}
         onCancel={handleModalCancel}
+        footer={<Button onClick={handleModalCancel}>Close</Button>}
       >
         Test
       </Modal>
-      <Modal destroyOnClose open={wishModalOpen} onCancel={handleModalCancel}>
+      <Modal
+        destroyOnClose
+        open={wishModalOpen}
+        onCancel={handleModalCancel}
+        footer={<Button onClick={handleModalCancel}>Close</Button>}
+      >
         <WishListTable />
       </Modal>
     </>
