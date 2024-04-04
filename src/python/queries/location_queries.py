@@ -58,7 +58,12 @@ def validateWishEntryExists(userId: str, locationCode: str) -> bool:
 
 
 def insertNewVisitedRecordForUser(
-    userId: str, arrival: str, departure: str, locationCode: str
+    userId: str,
+    arrival: str,
+    departure: str,
+    locationCode: str,
+    country: str,
+    province: str,
 ) -> Dict[str, str]:
     container = db.get_container_client("userTravel")
 
@@ -71,6 +76,8 @@ def insertNewVisitedRecordForUser(
                 "arrival": arrival,
                 "departure": departure,
                 "location": locationCode,
+                "country": country,
+                "province": province,
             }
         ],
     }
@@ -78,13 +85,22 @@ def insertNewVisitedRecordForUser(
     return container.create_item(insertInfo)
 
 
-def insertNewWishRecordForUser(userId: str, locationCode: str) -> Dict[str, str]:
+def insertNewWishRecordForUser(
+    userId: str, locationCode: str, country: str, province: str
+) -> Dict[str, str]:
     container = db.get_container_client("userWishTravel")
 
     insertInfo = {
         "id": str(uuid.uuid4()),
         "userId": userId,
-        "locations": [{"id": str(uuid.uuid4()), "location": locationCode}],
+        "locations": [
+            {
+                "id": str(uuid.uuid4()),
+                "location": locationCode,
+                "country": country,
+                "province": province,
+            }
+        ],
     }
 
     return container.create_item(insertInfo)

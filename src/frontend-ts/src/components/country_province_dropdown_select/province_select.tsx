@@ -7,12 +7,14 @@ import { Select, SelectProps } from "antd";
 export interface ProvinceSelectProps {
   selectedCountry: string;
   setSelectedProvinceCode: Dispatch<SetStateAction<string>>;
+  setSelectedProvince: Dispatch<SetStateAction<string>>;
   selectedProvinceCode?: string;
 }
 
 export function ProvinceSelect({
   selectedCountry,
   setSelectedProvinceCode,
+  setSelectedProvince,
   selectedProvinceCode,
 }: ProvinceSelectProps) {
   const provincesOptions: SelectProps["options"] = [];
@@ -29,7 +31,14 @@ export function ProvinceSelect({
   });
 
   const handleSelectChange = (provinceCode: string) => {
-    setSelectedProvinceCode(provinceCode);
+    provincesOptions.map((province) => {
+      if (province.value === provinceCode) {
+        console.log(province)
+        setSelectedProvinceCode(provinceCode)
+        return setSelectedProvince(province.label as string)
+      }
+      return null
+    })
   };
 
   return (

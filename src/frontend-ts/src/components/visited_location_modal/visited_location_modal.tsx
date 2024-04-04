@@ -30,20 +30,25 @@ export function VisitedLocationModal({
   countryData,
 }: VisitedLocationModalProps) {
   const [form] = Form.useForm();
-  const [selectedCountry, setSelectedCountry] = useState<string>(countryData.countryCode);
+  const [selectedCountry, setSelectedCountry] = useState<string>(
+    countryData.countryCode
+  );
   const [selectedProvinceCode, setSelectedProvinceCode] = useState<string>(
     countryData.provinceCode
   );
   const [selectedCountryCode, setSelectedCountryCode] = useState<string>(
     countryData.countryCode
   );
+  const [selectedProvince, setSelectedProvince] = useState<string>("");
   const [accessToken, setAccessToken] = useState<string | undefined>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [apiData, setApiData] = useState<AddVisitedLocationRequest>({
-    accessToken: "",
     arrival: "",
     departure: "",
-    locationCode: "",
+    countryCode: "",
+    country: "",
+    provinceCode: "",
+    province: "",
   });
 
   const [noificationApi, contextHolder] = notification.useNotification();
@@ -60,7 +65,8 @@ export function VisitedLocationModal({
     if (
       apiData.arrival &&
       apiData.departure &&
-      apiData.locationCode &&
+      apiData.countryCode &&
+      apiData.provinceCode &&
       accessToken
     ) {
       setIsLoading(true);
@@ -69,11 +75,7 @@ export function VisitedLocationModal({
       };
 
       await axios
-        .post(
-          `https://ax6v5dntdj.us-east-1.awsapprunner.com/location/${apiData.locationCode}/${apiData.arrival}/${apiData.departure}`,
-          {},
-          config
-        )
+        .post(`http://localhost:5000/location`, apiData, config)
         .then(() => {
           setIsLoading(false);
           setShowModal(false);
@@ -125,10 +127,12 @@ export function VisitedLocationModal({
         }Z${res["dates"][1]["$y"]}`;
 
         setApiData({
-          accessToken: accessToken,
           arrival: arrival,
           departure: departure,
-          locationCode: `${selectedCountryCode}-${selectedProvinceCode}`,
+          countryCode: selectedCountryCode,
+          country: selectedCountry,
+          provinceCode: selectedProvinceCode,
+          province: selectedProvince,
         });
 
         fireApiRequest();
@@ -175,27 +179,18 @@ export function VisitedLocationModal({
         <Form form={form}>
           <Form.Item label="Country">
             <Space.Compact>
-              <Form.Item
-                name={"country"}
-                required
-                noStyle
-                rules={[{ required: true, message: "Country is required" }]}
-              >
+              <Form.Item name={"country"} noStyle>
                 <CountrySelect
                   countryCode={selectedCountryCode}
                   setSelectedCountry={setSelectedCountry}
                   setSelectedCountryCode={setSelectedCountryCode}
                 />
               </Form.Item>
-              <Form.Item
-                name={"province"}
-                required
-                noStyle
-                rules={[{ required: true, message: "Province is required" }]}
-              >
+              <Form.Item name={"province"} noStyle>
                 <ProvinceSelect
                   selectedCountry={selectedCountry}
                   selectedProvinceCode={selectedProvinceCode}
+                  setSelectedProvince={setSelectedProvince}
                   setSelectedProvinceCode={setSelectedProvinceCode}
                 />
               </Form.Item>

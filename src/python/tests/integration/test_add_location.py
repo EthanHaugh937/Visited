@@ -1,8 +1,16 @@
 def test_add_visited_location(client_app, user):
     add_response = client_app.post(
-        "/location/IE-RN/20Z3Z2024/25Z3Z2024",
+        "/location",
         headers={
             "Authorization": f'Bearer {user.get("AuthenticationResult").get("AccessToken")}'
+        },
+        json={
+            "countryCode": "IE",
+            "country": "Ireland",
+            "provinceCode": "RN",
+            "province": "Roscommon",
+            "arrival": "20Z3Z2024",
+            "departure": "25Z3Z2024",
         },
     )
 
@@ -14,21 +22,32 @@ def test_add_visited_location(client_app, user):
             "arrival": "20Z3Z2024",
             "departure": "25Z3Z2024",
             "location": "IE-RN",
+            "country": "Ireland",
+            "province": "Roscommon",
         }.items()
     )
 
 
 def test_add_wish_location(client_app, user):
     response = client_app.post(
-        "/wishlocation/IE-RN",
+        "/wishlocation",
         headers={
             "Authorization": f'Bearer {user.get("AuthenticationResult").get("AccessToken")}'
+        },
+        json={
+            "countryCode": "IE",
+            "country": "Ireland",
+            "provinceCode": "RN",
+            "province": "Roscommon",
         },
     )
 
     assert response.status_code == 200
     assert len(response.json.get("locations")) == 1
-    assert response.json.get("locations")[0].items() >= {"location": "IE-RN"}.items()
+    assert (
+        response.json.get("locations")[0].items()
+        >= {"location": "IE-RN", "country": "Ireland", "province": "Roscommon"}.items()
+    )
 
 
 def test_retrieve_delete_visited_record(client_app, user):
@@ -47,6 +66,8 @@ def test_retrieve_delete_visited_record(client_app, user):
             "arrival": "20Z3Z2024",
             "departure": "25Z3Z2024",
             "location": "IE-RN",
+            "country": "Ireland",
+            "province": "Roscommon",
         }.items()
     )
 
@@ -71,7 +92,10 @@ def test_retrieve_delete_wish_record(client_app, user):
     )
 
     assert retrieve_response.status_code == 200
-    assert retrieve_response.json.get("locations")[0].items() >= {"location": "IE-RN"}.items()
+    assert (
+        retrieve_response.json.get("locations")[0].items()
+        >= {"location": "IE-RN", "country": "Ireland", "province": "Roscommon"}.items()
+    )
     assert retrieve_response.json.get("wishItemsFulfilled") == 1
 
     delete_response = client_app.delete(
