@@ -49,13 +49,9 @@ export function useGetUserLocations({
   return { locations: locations || [], isLoading: isLoading };
 }
 
-export interface UseGetUserWishLocationsProps {
-  refetch?: boolean;
-}
-
 export function UseGetUserWishLocations({
   refetch,
-}: UseGetUserWishLocationsProps): useGetUserWishLocationsResponse {
+}: useGetUserLocationsProps): useGetUserWishLocationsResponse {
   const [accessToken, setAccessToken] = useState<string>();
   const [locations, setLocations] = useState<locations[]>();
   const [wishFulfilled, setWishFulfileld] = useState<number>(0);

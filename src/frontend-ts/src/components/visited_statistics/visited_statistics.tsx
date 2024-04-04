@@ -81,7 +81,7 @@ export function VisitedStatistics({
       >
         Test
       </Modal>
-      <Modal destroyOnClose open={wishModalOpen} onCancel={handleModalCancel} className={styles.modal}>
+      <Modal destroyOnClose open={wishModalOpen} onCancel={handleModalCancel}>
         <WishListTable />
       </Modal>
     </>
