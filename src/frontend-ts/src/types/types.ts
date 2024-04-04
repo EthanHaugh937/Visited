@@ -38,10 +38,12 @@ export interface CountryState {
 }
 
 export interface AddVisitedLocationRequest {
-  accessToken: string | undefined;
   arrival: string;
   departure: string;
-  locationCode: string;
+  countryCode: string;
+  provinceCode: string;
+  country: string;
+  province: string;
 }
 
 export interface AddWishLocationRequest {

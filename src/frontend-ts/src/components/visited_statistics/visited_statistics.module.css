@@ -11,6 +11,10 @@
     border-radius: 25px;
     background: #aaaaaa;
     padding: 8px;
+
+    .row {
+      background-color: #aaaaaa;
+    }
   }
 }
 

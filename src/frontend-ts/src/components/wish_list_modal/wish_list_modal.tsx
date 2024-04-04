@@ -17,6 +17,7 @@ export function WishListModal({ showModal, setShowModal }: WishListModalProps) {
   const [selectedCountry, setSelectedCountry] = useState<string>("");
   const [selectedCountryCode, setSelectedCountryCode] = useState<string>("");
   const [selectedProvinceCode, setSelectedProvinceCode] = useState<string>("");
+  const [selectedProvince, setSelectedProvince] = useState<string>("");
   const [apiData, setApiData] = useState<AddWishLocationRequest>({
     accessToken: "",
     locationCode: "",
@@ -44,17 +45,26 @@ export function WishListModal({ showModal, setShowModal }: WishListModalProps) {
         headers: { Authorization: `Bearer ${accessToken}` },
       };
 
+      const body = {
+        countryCode: selectedCountryCode,
+        provinceCode: selectedProvinceCode,
+        country: selectedCountry,
+        province: selectedProvince,
+      }
+
       await axios
         .post(
-          `https://ax6v5dntdj.us-east-1.awsapprunner.com/wishlocation/${selectedCountryCode}-${selectedProvinceCode}`,
-          {},
+          'http://localhost:5000/wishlocation',
+          body,
           config
         )
         .then(() => {
           setIsLoading(false);
           setShowModal(false);
           form.resetFields();
-          return openSuccessNotificationWithIcon("Wish List Item Added Successfully!")
+          return openSuccessNotificationWithIcon(
+            "Wish List Item Added Successfully!"
+          );
         })
         .catch((error: AxiosError) => {
           setIsLoading(false);
@@ -127,6 +137,7 @@ export function WishListModal({ showModal, setShowModal }: WishListModalProps) {
               <Form.Item name={"province"} noStyle>
                 <ProvinceSelect
                   selectedCountry={selectedCountry}
+                  setSelectedProvince={setSelectedProvince}
                   setSelectedProvinceCode={setSelectedProvinceCode}
                 />
               </Form.Item>
