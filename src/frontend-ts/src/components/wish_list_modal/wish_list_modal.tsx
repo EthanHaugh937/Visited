@@ -9,8 +9,9 @@ import { ProvinceSelect } from "../country_province_dropdown_select/province_sel
 export interface WishListModalProps {
   showModal: boolean;
   setShowModal: Dispatch<SetStateAction<boolean>>;
+  setRefetch: Dispatch<SetStateAction<boolean>>
 }
-export function WishListModal({ showModal, setShowModal }: WishListModalProps) {
+export function WishListModal({ showModal, setShowModal, setRefetch }: WishListModalProps) {
   const [form] = Form.useForm();
   const [accessToken, setAccessToken] = useState<string | undefined>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -61,6 +62,7 @@ export function WishListModal({ showModal, setShowModal }: WishListModalProps) {
         .then(() => {
           setIsLoading(false);
           setShowModal(false);
+          setRefetch(true)
           form.resetFields();
           return openSuccessNotificationWithIcon(
             "Wish List Item Added Successfully!"

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   useGetUserLocations,
   UseGetUserWishLocations,
@@ -22,8 +22,12 @@ export function MapVisualisationView() {
     provinceCode: "",
   });
 
-  const visitedResponse = useGetUserLocations({ refetch, setRefetch });
-  const wishResponse = UseGetUserWishLocations();
+  const visitedResponse = useGetUserLocations({ refetch });
+  const wishResponse = UseGetUserWishLocations({ refetch });
+
+  useEffect(() => {
+    setRefetch(false);
+  }, [visitedResponse, wishResponse]);
 
   return (
     <>
@@ -62,6 +66,7 @@ export function MapVisualisationView() {
       <WishListModal
         showModal={showWishModal}
         setShowModal={setShowWishModal}
+        setRefetch={setRefetch}
       />
     </>
   );

@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 
 export function WishListTable() {
   const [refetch, setRefetch] = useState<boolean>(false);
-  const { isLoading, locations } = UseGetUserWishLocations(refetch);
+  const { isLoading, locations } = UseGetUserWishLocations({refetch});
 
   const { confirm } = Modal;
 
