@@ -7,7 +7,6 @@ import { locations } from "../../types/types";
 import { DeleteOutlined } from "@ant-design/icons";
 import styles from "./wish_list_table.module.css";
 import { useEffect, useState } from "react";
-import { ColumnFilterItem } from "antd/es/table/interface";
 
 export function WishListTable() {
   const [refetch, setRefetch] = useState<boolean>(false);
