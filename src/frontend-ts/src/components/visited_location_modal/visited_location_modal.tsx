@@ -76,7 +76,7 @@ export function VisitedLocationModal({
 
       await axios
         .post(
-          "https://ax6v5dntdj.us-east-1.awsapprunner.com/location",
+          "https://ax6v5dntdj.us-east-1.awsapprunner.com/api/v1.0/location",
           apiData,
           config
         )

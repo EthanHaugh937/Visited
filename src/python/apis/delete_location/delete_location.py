@@ -11,7 +11,7 @@ from queries.location_queries import (
 
 db = client.get_database_client("visitedUserTravel")
 
-@app.route("/location/<string:recordId>", methods=["DELETE"])
+@app.route("/api/v1.0/location/<string:recordId>", methods=["DELETE"])
 @authenticated
 def delete_visited_location(authentication: Dict[str, str], recordId: str):
     userId = authentication.get("userId")
@@ -28,7 +28,7 @@ def delete_visited_location(authentication: Dict[str, str], recordId: str):
     return make_response(response, 200)
 
 
-@app.route("/wishlocation/<string:recordId>", methods=["DELETE"])
+@app.route("/api/v1.0/wishlocation/<string:recordId>", methods=["DELETE"])
 @authenticated
 def delete_wish_location(authentication: Dict[str, str], recordId: str):
     userId = authentication.get("userId")

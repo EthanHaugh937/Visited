@@ -31,7 +31,7 @@ export function useGetUserLocations({
     const fetchData = async () => {
       if ((accessToken !== undefined && accessToken !== "") || refetch) {
         await axios
-          .get("https://ax6v5dntdj.us-east-1.awsapprunner.com/location", {
+          .get("https://ax6v5dntdj.us-east-1.awsapprunner.com/api/v1.0/location", {
             headers: { Authorization: `Bearer ${accessToken}` },
           })
           .then((response) => {
@@ -70,7 +70,7 @@ export function UseGetUserWishLocations({
     const fetchData = async () => {
       if (accessToken !== undefined && accessToken !== "") {
         await axios
-          .get("https://ax6v5dntdj.us-east-1.awsapprunner.com/wishlocation", {
+          .get("https://ax6v5dntdj.us-east-1.awsapprunner.com/api/v1.0/wishlocation", {
             headers: { Authorization: `Bearer ${accessToken}` },
           })
           .then((response) => {
@@ -104,7 +104,7 @@ export function UseDeleteUserWishLocation({
     .then((response) => {
       axios
         .delete(
-          `https://ax6v5dntdj.us-east-1.awsapprunner.com/wishlocation/${recordId}`,
+          `https://ax6v5dntdj.us-east-1.awsapprunner.com/api/v1.0/wishlocation/${recordId}`,
           {
             headers: {
               Authorization: `Bearer: ${response.tokens?.accessToken.toString()}`,
@@ -125,7 +125,7 @@ export function UseDeleteUserVisitedLocation({
     .then((response) => {
       axios
         .delete(
-          `https://ax6v5dntdj.us-east-1.awsapprunner.com/location/${recordId}`,
+          `https://ax6v5dntdj.us-east-1.awsapprunner.com/api/v1.0/location/${recordId}`,
           {
             headers: {
               Authorization: `Bearer: ${response.tokens?.accessToken.toString()}`,
