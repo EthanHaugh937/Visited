@@ -8,7 +8,7 @@ from queries.location_queries import getUserVisitedLocations, getUserWishLocatio
 from exceptions.account_exceptions import RecordDoesNotExist
 
 
-@app.route("/location", methods=["GET"])
+@app.route("/api/v1.0/location", methods=["GET"])
 @authenticated
 def get_user_visited_locations(authentication: Dict[str, str]):
     try:
@@ -19,7 +19,7 @@ def get_user_visited_locations(authentication: Dict[str, str]):
     return response
 
 
-@app.route("/wishlocation", methods=["GET"])
+@app.route("/api/v1.0/wishlocation", methods=["GET"])
 @authenticated
 def get_user_wish_locations(authentication: Dict[str, str]):
     try:

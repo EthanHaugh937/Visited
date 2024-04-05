@@ -10,7 +10,7 @@ from exceptions.account_exceptions import RecordDoesNotExist
 
 conn = boto3.client("cognito-idp")
 
-@app.route("/account", methods=['DELETE'])
+@app.route("/api/v1.0/account", methods=['DELETE'])
 @authenticated
 def delete_account(authentication: Dict[str, str]):
     try:
