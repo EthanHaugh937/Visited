@@ -17,7 +17,7 @@ from queries.location_queries import (
 
 
 @app.route(
-    "/location",
+    "/api/v1.0/location",
     methods=["POST"],
 )
 @authenticated
@@ -65,7 +65,7 @@ def add_visited_location(authentication: Dict):
 
 
 @app.route(
-    "/wishlocation",
+    "/api/v1.0/wishlocation",
     methods=["POST"],
 )
 @authenticated

@@ -1,6 +1,6 @@
 def test_add_visited_location(client_app, user):
     add_response = client_app.post(
-        "/location",
+        "/api/v1.0/location",
         headers={
             "Authorization": f'Bearer {user.get("AuthenticationResult").get("AccessToken")}'
         },
@@ -30,7 +30,7 @@ def test_add_visited_location(client_app, user):
 
 def test_add_wish_location(client_app, user):
     response = client_app.post(
-        "/wishlocation",
+        "/api/v1.0/wishlocation",
         headers={
             "Authorization": f'Bearer {user.get("AuthenticationResult").get("AccessToken")}'
         },
@@ -53,7 +53,7 @@ def test_add_wish_location(client_app, user):
 def test_retrieve_delete_visited_record(client_app, user):
 
     retrieve_response = client_app.get(
-        "/location",
+        "api/v1.0/location",
         headers={
             "Authorization": f'Bearer {user.get("AuthenticationResult").get("AccessToken")}'
         },
@@ -85,7 +85,7 @@ def test_retrieve_delete_visited_record(client_app, user):
 def test_retrieve_delete_wish_record(client_app, user):
 
     retrieve_response = client_app.get(
-        "/wishlocation",
+        "api/v1.0/wishlocation",
         headers={
             "Authorization": f'Bearer {user.get("AuthenticationResult").get("AccessToken")}'
         },
@@ -99,7 +99,7 @@ def test_retrieve_delete_wish_record(client_app, user):
     assert retrieve_response.json.get("wishItemsFulfilled") == 1
 
     delete_response = client_app.delete(
-        f"/wishlocation/{retrieve_response.json.get('locations')[0].get('id')}",
+        f"/api/v1.0/wishlocation/{retrieve_response.json.get('locations')[0].get('id')}",
         headers={
             "Authorization": f'Bearer {user.get("AuthenticationResult").get("AccessToken")}'
         },
