@@ -7,6 +7,7 @@ import { locations } from "../../types/types";
 import { DeleteOutlined } from "@ant-design/icons";
 import styles from "./wish_list_table.module.css";
 import { useEffect, useState } from "react";
+import { ColumnFilterItem } from "antd/es/table/interface";
 
 export function WishListTable() {
   const [refetch, setRefetch] = useState<boolean>(false);
@@ -44,6 +45,8 @@ export function WishListTable() {
 
   const [noificationApi, contextHolder] = notification.useNotification();
 
+  const countriesList = new Set(Array.from(locations, (record) => record.country))
+
   const openErrorNotificationWithIcon = (error: string) => {
     noificationApi["error"]({
       message: "There was a problem!",
@@ -63,6 +66,8 @@ export function WishListTable() {
       render: (record) => {
         return record.country;
       },
+      filters: Array.from(countriesList, (record) => {return {text: record, value: record}}),
+      onFilter: (value, record) => record.country.indexOf(value as string) === 0,
     },
     {
       title: "Province",

@@ -39,7 +39,7 @@ export function VisitedLocationModal({
   const [selectedCountryCode, setSelectedCountryCode] = useState<string>(
     countryData.countryCode
   );
-  const [selectedProvince, setSelectedProvince] = useState<string>("");
+  const [selectedProvince, setSelectedProvince] = useState<string>(countryData.province);
   const [accessToken, setAccessToken] = useState<string | undefined>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [apiData, setApiData] = useState<AddVisitedLocationRequest>({
@@ -100,6 +100,7 @@ export function VisitedLocationModal({
   useEffect(() => {
     form.resetFields();
     setSelectedCountry(countryData.country);
+    setSelectedProvince(countryData.province)
     form.setFieldValue("country", countryData.countryCode);
     form.setFieldValue("province", countryData.provinceCode);
   }, [form, countryData, countriesResponse]);
