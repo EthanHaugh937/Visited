@@ -9,7 +9,7 @@ auth_client = boto3.client("cognito-idp")
 
 def test_delete_user_account(client_app, user):
     response = client_app.delete(
-        "/account",
+        "/api/v1.0/account",
         headers={
             "Authorization": f'Bearer {user.get("AuthenticationResult").get("AccessToken")}'
         },
