@@ -44,6 +44,8 @@ export function VisitedListTable() {
 
   const [notificationApi, contextHolder] = notification.useNotification();
 
+  const countriesList = new Set(Array.from(locations, (record) => record.country))
+
   const openErrorNotificationWithIcon = (error: string) => {
     notificationApi["error"]({
       message: "There was a problem!",
@@ -63,6 +65,9 @@ export function VisitedListTable() {
       render: (record) => {
         return record.country;
       },
+      filters: Array.from(countriesList, (record) => {return {text: record, value: record}}),
+      onFilter: (value, record) => record.country.indexOf(value as string) === 0,
+      sorter: (a, b) => a.country.localeCompare(b.country)
     },
     {
       title: "Province",
