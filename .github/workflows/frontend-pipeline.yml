@@ -41,6 +41,10 @@ jobs:
           # npm run build
           # npm run test
 
+      - name: print current directory
+        run: 
+          pwd
+
       - name: configure amplify
         run: 
           amplify configure project
