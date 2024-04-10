@@ -41,12 +41,9 @@ jobs:
           # npm run build
           # npm run test
 
-      - name: print current directory
-        run: 
-          pwd
-
       - name: configure amplify
-        run: 
+        run: |
+          cd src/frontend-ts
           amplify configure project
 
       - name: deploy
