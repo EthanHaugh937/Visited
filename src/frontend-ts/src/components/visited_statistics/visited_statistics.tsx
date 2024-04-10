@@ -30,7 +30,7 @@ export function VisitedStatistics({
   const visitedCountries: string[] = [];
 
   const data: ListData[] = [
-    { key: "visited", value: "Visited Places", action: setVisitedModalOpen },
+    { key: "visited", value: "Visited Places!", action: setVisitedModalOpen },
     { key: "wish", value: "Wish List", action: setWishModalOpen },
   ];
 
