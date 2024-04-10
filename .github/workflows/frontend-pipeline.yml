@@ -9,6 +9,9 @@ permissions:
   contents: read
 
 jobs:
+  defaults:
+    run:
+      working-directory: ./src/frontend-ts
   build:
     runs-on: ubuntu-latest
 
@@ -21,25 +24,18 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Install and pull amplify
-        working-directory: src/frontend-ts
-        run: 
+        run: |
           npm install -g @aws-amplify/cli
           amplify pull --appId d2rsi8yv6bvbyk --yes
 
       - name: install, build and test
-        working-directory: src/frontend-ts
         run: 
           npm install
-          # build and test
-          # npm run build
-          # npm run test
 
       - name: configure amplify
-        working-directory: src/frontend-ts
         run: 
           amplify configure project
 
       - name: deploy
-        working-directory: src/frontend-ts
         run: 
           amplify publish --yes
