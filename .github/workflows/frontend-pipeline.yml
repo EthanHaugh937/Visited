@@ -30,6 +30,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: us-east-1
         run: |
+          npm install -g @aws-amplify/cli
           amplify pull --appId d2rsi8yv6bvbyk --yes
 
       - name: install, build and test
