@@ -21,7 +21,7 @@ export function EditableList({ dataSource }: EditableListProps) {
               onClick={() => {
                 item.action(true);
               }}
-            ></Button>,
+            />,
           ]}
         >
           <Typography.Title
