@@ -239,7 +239,7 @@ export function Map({
     return () => {
       root.dispose();
     };
-  }, [setCountryData, setModalOpen, visitedPlaces]);
+  }, [setCountryData, setModalOpen, visitedPlaces, wishLocations.locations]);
 
   return (
     <>
