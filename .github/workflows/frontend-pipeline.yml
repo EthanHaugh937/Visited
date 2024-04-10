@@ -21,39 +21,25 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Install and pull amplify
-        # uses: ambientlight/amplify-cli-action@0.3.0
-        # with:
-        #   amplify_command: configure
-        #   amplify_env: prod
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: us-east-1
-        run: |
+        working-directory: src/frontend-ts
+        run: 
           npm install -g @aws-amplify/cli
           amplify pull --appId d2rsi8yv6bvbyk --yes
 
       - name: install, build and test
-        run: |
-          cd src/frontend-ts
+        working-directory: src/frontend-ts
+        run: 
           npm install
           # build and test
           # npm run build
           # npm run test
 
       - name: configure amplify
-        run: |
-          cd src/frontend-ts
+        working-directory: src/frontend-ts
+        run: 
           amplify configure project
 
       - name: deploy
-        # uses: ambientlight/amplify-cli-action@0.3.0
-        # with:
-        #   amplify_command: publish
-        #   amplify_env: prod
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: us-east-1
+        working-directory: src/frontend-ts
         run: 
-          cd src/frontend-ts && amplify publish --yes
+          amplify publish --yes
