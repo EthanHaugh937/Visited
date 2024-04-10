@@ -9,11 +9,12 @@ permissions:
   contents: read
 
 jobs:
-  defaults:
-    run:
-      working-directory: ./src/frontend-ts
   build:
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./src/frontend-ts
 
     steps:
       - uses: actions/checkout@v1
