@@ -22,8 +22,8 @@ def delete_visited_location(authentication: Dict[str, str], recordId: str):
         response = deleteUserLocation(userId, recordId, container)
     except RecordDoesNotExist as e:
         return make_response(
-            jsonify({"message": "The requested record to delete cannot be found"}), 400
-        )
+            jsonify({"message": "The requested record to delete cannot be found"}), 404)
+        
 
     return make_response(response, 200)
 
@@ -39,7 +39,7 @@ def delete_wish_location(authentication: Dict[str, str], recordId: str):
         response = deleteUserLocation(userId, recordId, container)
     except RecordDoesNotExist as e:
         return make_response(
-            jsonify({"message": "The requested record to delete cannot be found"}), 400
+            jsonify({"message": "The requested record to delete cannot be found"}), 404
         )
 
     return make_response(response, 200)

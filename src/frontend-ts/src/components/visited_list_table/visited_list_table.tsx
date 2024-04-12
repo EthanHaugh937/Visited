@@ -44,7 +44,9 @@ export function VisitedListTable() {
 
   const [notificationApi, contextHolder] = notification.useNotification();
 
-  const countriesList = new Set(Array.from(locations, (record) => record.country))
+  const countriesList = new Set(
+    Array.from(locations, (record) => record.country)
+  );
 
   const openErrorNotificationWithIcon = (error: string) => {
     notificationApi["error"]({
@@ -65,14 +67,32 @@ export function VisitedListTable() {
       render: (record) => {
         return record.country;
       },
-      filters: Array.from(countriesList, (record) => {return {text: record, value: record}}),
-      onFilter: (value, record) => record.country.indexOf(value as string) === 0,
-      sorter: (a, b) => a.country.localeCompare(b.country)
+      filters: Array.from(countriesList, (record) => {
+        return { text: record, value: record };
+      }),
+      onFilter: (value, record) =>
+        record.country.indexOf(value as string) === 0,
+      sorter: (a, b) => a.country.localeCompare(b.country),
     },
     {
       title: "Province",
       render: (record) => {
         return record.province;
+      },
+    },
+    {
+      title: "Duration",
+      render: (record: locations) => {
+        const arrived = new Date(
+          record.arrival?.replaceAll("Z", "/") as string
+        );
+        const departed = new Date(
+          record.departure?.replaceAll("Z", "/") as string
+        );
+
+        const vacationDays =
+          (departed.getTime() - arrived.getTime()) / (1000 * 3600 * 24);
+        return Math.floor(vacationDays);
       },
     },
     {
@@ -90,7 +110,12 @@ export function VisitedListTable() {
   return (
     <>
       {contextHolder}
-      <Table key="table" loading={isLoading} dataSource={locations} columns={columns} />
+      <Table
+        key="table"
+        loading={isLoading}
+        dataSource={locations}
+        columns={columns}
+      />
     </>
   );
 }

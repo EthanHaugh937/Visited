@@ -14,7 +14,7 @@ def get_user_visited_locations(authentication: Dict[str, str]):
     try:
         response = getUserVisitedLocations(authentication.get("userId"))
     except RecordDoesNotExist:
-        return make_response(jsonify({"message": "The requested resource does not exist!"}), 400)
+        return make_response(jsonify({"message": "The requested resource does not exist!"}), 404)
 
     return response
 
@@ -25,11 +25,12 @@ def get_user_wish_locations(authentication: Dict[str, str]):
     try:
         visitedResponse = getUserVisitedLocations(authentication.get("userId"))
     except RecordDoesNotExist:
-        return make_response(jsonify({"message": "The requested resource has no visited listed to compare to!"}), 400)
+        return make_response(jsonify({"message": "The requested resource has no visited listed to compare to!"}), 404)
+    
     try:
         wishResponse = getUserWishLocations(authentication.get("userId"))
     except RecordDoesNotExist:
-        return make_response(jsonify({"message": "The requested resource does not exist!"}), 400)
+        return make_response(jsonify({"message": "The requested resource does not exist!"}), 404)
     
     wishItemsFulfilled = 0
     

@@ -124,11 +124,11 @@ export function VisitedLocationModal({
       .then(async (res) => {
         await getAccessToken();
 
-        const arrival = `${res["dates"][0]["$D"]}Z${
-          res["dates"][0]["$M"] + 1
+        const arrival = `${res["dates"][0]["$M"]}Z${
+          res["dates"][0]["$D"] + 1
         }Z${res["dates"][0]["$y"]}`;
-        const departure = `${res["dates"][1]["$D"]}Z${
-          res["dates"][1]["$M"] + 1
+        const departure = `${res["dates"][1]["$M"]}Z${
+          res["dates"][1]["$D"] + 1
         }Z${res["dates"][1]["$y"]}`;
 
         setApiData({
