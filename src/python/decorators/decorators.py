@@ -16,11 +16,12 @@ class AuthError(Exception):
 def authenticated(func):
     @wraps(func)
     def authenticated(*args, **kwargs):
-        if (authToken := request.headers.get("Authorization", None)) is None:
+        if (auth_token := request.headers.get("Authorization", None)) is None:
             return jsonify({"message": "Please provide an access token"}), 401
 
+        # Split bearer token and grab the provided access token
         try:
-            token = authToken.split()[1]
+            token = auth_token.split()[1]
         except IndexError:
             return (
                 jsonify(
@@ -31,16 +32,19 @@ def authenticated(func):
                 401,
             )
 
-        jsonurl = urlopen("https://cognito-idp.us-east-1.amazonaws.com/us-east-1_5jDVTIUE5/.well-known/jwks.json")
-        jwks = json.loads(jsonurl.read())
+        # Retrieve signing keys from AWS Cognito
+        token_signing_key = urlopen("https://cognito-idp.us-east-1.amazonaws.com/us-east-1_5jDVTIUE5/.well-known/jwks.json")
+        signing_keys = json.loads(token_signing_key.read())
 
+        # Attempt to split token into parts
         try:
             unverified_header = jwt.get_unverified_header(token)
         except JWTError:
             return jsonify({"message": "Access Token is invalid!"}), 401
 
+        # Check was the provided token signed by any Cognito signing keys
         rsa_key = {}
-        for key in jwks["keys"]:
+        for key in signing_keys["keys"]:
             if key["kid"] == unverified_header["kid"]:
                 rsa_key = {
                     "kty": key["kty"],
@@ -49,7 +53,9 @@ def authenticated(func):
                     "n": key["n"],
                     "e": key["e"],
                 }
+
         if rsa_key:
+            # Attempt to decode and verifying signing signature
             try:
                 payload = jwt.decode(
                     token,
@@ -71,9 +77,11 @@ def authenticated(func):
                 )
             except jwt.ExpiredSignatureError:
                 return jsonify({"message": "Access Token expired"}), 401
+            
             return func(dict(userId=payload["sub"], token=token), *args, **kwargs)
+        
         raise AuthError(
-            {"message": "Invalid Header: Could not find proper key"},
+            {"message": "Invalid Header: Could not find valid singing key"},
             401,
         )
 
