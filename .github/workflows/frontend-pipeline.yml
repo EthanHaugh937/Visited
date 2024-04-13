@@ -25,7 +25,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Install and pull amplify
+      - name: Install Amplify CLI and pull project
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -34,11 +34,11 @@ jobs:
           npm install -g @aws-amplify/cli
           amplify pull --appId d2rsi8yv6bvbyk --yes
 
-      - name: install, build and test
+      - name: Npm install dependencies
         run: 
           npm install
 
-      - name: configure amplify
+      - name: Configure Amplify Credentials
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -46,6 +46,6 @@ jobs:
         run: 
           amplify configure project
 
-      - name: deploy
+      - name: Deploy
         run: 
           amplify publish --yes
