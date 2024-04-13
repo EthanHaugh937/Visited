@@ -1,4 +1,4 @@
-name: Backend Docker Build
+name: Frontend Build and Deploy
 
 on:
   push:
