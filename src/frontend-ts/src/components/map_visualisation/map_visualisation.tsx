@@ -4,6 +4,7 @@ import am5geodata_worldLow from "@amcharts/amcharts5-geodata/worldLow";
 import am5geodata_continentsLow from "@amcharts/amcharts5-geodata/worldLow";
 import am5geodata_data_countries from "@amcharts/amcharts5-geodata/data/countries2";
 import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
+import * as am5plugins_exporting from "@amcharts/amcharts5/plugins/exporting";
 import styles from "./map.module.css";
 import { Dispatch, SetStateAction, useLayoutEffect } from "react";
 import { CountryData, useGetUserLocationsResponse } from "../../types/types";
@@ -237,6 +238,12 @@ export function Map({
       chart.goHome();
       continentSeries.show();
       selectedCountrySeries.hide();
+    });
+
+    am5plugins_exporting.Exporting.new(root, {
+      menu: am5plugins_exporting.ExportingMenu.new(root, {}),
+      pdfOptions: { disabled: true },
+      printOptions: { disabled: true },
     });
 
     return () => {
