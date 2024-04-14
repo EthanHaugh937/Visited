@@ -10,7 +10,7 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  build and deploy:
     runs-on: ubuntu-latest
 
     defaults:
@@ -20,7 +20,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
-      - name: use node.js ${{ matrix.node-version }}
+      - name: Gather node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}

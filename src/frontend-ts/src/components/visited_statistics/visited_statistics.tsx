@@ -29,8 +29,9 @@ export function VisitedStatistics({
   const [wishModalOpen, setWishModalOpen] = useState<boolean>(false);
   const visitedCountries: string[] = [];
 
+  // Items to show in the editable list
   const data: ListData[] = [
-    { key: "visited", value: "Visited Places!", action: setVisitedModalOpen },
+    { key: "visited", value: "Visited Places", action: setVisitedModalOpen },
     { key: "wish", value: "Wish List", action: setWishModalOpen },
   ];
 

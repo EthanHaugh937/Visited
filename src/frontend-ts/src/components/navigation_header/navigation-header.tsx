@@ -45,6 +45,7 @@ function NavigationHeader() {
         </div>
       </div>
 
+      {/* Account pop over container */}
       <Drawer
         onClose={onDrawerClose}
         open={drawerOpen}

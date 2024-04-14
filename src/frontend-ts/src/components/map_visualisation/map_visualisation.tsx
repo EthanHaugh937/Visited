@@ -39,6 +39,7 @@ export function Map({
       am5map.ZoomControl.new(root, {})
     );
 
+    // Create seperate map Series, exclude Antarctica
     const continentSeries = chart.series.push(
       am5map.MapPolygonSeries.new(root, {
         geoJSON: am5geodata_continentsLow,
@@ -102,6 +103,7 @@ export function Map({
       }
     );
 
+    // Add country maps to individual countries
     let data = [];
     for (const id in am5geodata_data_countries) {
       if (am5geodata_data_countries.hasOwnProperty(id)) {
@@ -212,14 +214,15 @@ export function Map({
         paddingTop: 10,
         paddingBottom: 10,
         icon: am5.Graphics.new(root, {
-          svgPath:
-            "M16,8 L14,8 L14,16 L10,16 L10,10 L6,10 L6,16 L2,16 L2,8 L0,8 L8,0 L16,8 Z M16,8",
           fill: am5.color(0xffffff),
+          svgPath:
+            "M17, 8 L14, 8 L14, 16 L10, 16 L10 ,10 L6, 10 L6,16 L2,16 L2, 8 L0,8 L8, 1 L16, 8 Z M16, 9",
         }),
       }),
       0
     );
 
+    // Set button backgrounds to grey
     zoomControl.plusButton.get("background")?.setAll({
       fill: am5.color("#6c6765"),
     });

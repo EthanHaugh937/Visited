@@ -27,6 +27,7 @@ export function StatisticVisualisation({
     })
   );
 
+  // If HTTP request is not fulfilled, show loading animation
   return (
     <div className={`${styles.card} px-3 py-2`}>
       {isLoading ? (

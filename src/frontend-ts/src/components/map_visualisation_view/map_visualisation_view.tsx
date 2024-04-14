@@ -40,6 +40,7 @@ export function MapVisualisationView() {
         />
       </Row>
 
+      {/* Button to accomodate adding new data */}
       <FloatButton.Group trigger="hover" icon={<CloudOutlined />}>
         <FloatButton
           onClick={() => setShowWishModal(true)}
@@ -56,6 +57,7 @@ export function MapVisualisationView() {
         wishResponse={wishResponse}
       />
 
+      {/* Modal for adding new visited location */}
       <VisitedLocationModal
         setRefetch={setRefetch}
         showModal={showVisitedModal}
@@ -63,6 +65,7 @@ export function MapVisualisationView() {
         countryData={countryData}
       />
 
+      {/* Modal for adding new wish location */}
       <WishListModal
         showModal={showWishModal}
         setShowModal={setShowWishModal}

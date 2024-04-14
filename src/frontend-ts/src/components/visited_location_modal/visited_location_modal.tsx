@@ -39,7 +39,9 @@ export function VisitedLocationModal({
   const [selectedCountryCode, setSelectedCountryCode] = useState<string>(
     countryData.countryCode
   );
-  const [selectedProvince, setSelectedProvince] = useState<string>(countryData.province);
+  const [selectedProvince, setSelectedProvince] = useState<string>(
+    countryData.province
+  );
   const [accessToken, setAccessToken] = useState<string | undefined>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [apiData, setApiData] = useState<AddVisitedLocationRequest>({
@@ -61,7 +63,7 @@ export function VisitedLocationModal({
     setSelectedProvinceCode(countryData.provinceCode);
   }, [countryData.countryCode, countryData.provinceCode]);
 
-  const fireApiRequest = async () => {
+  const createNewVisiteedLocation = async () => {
     if (
       apiData.arrival &&
       apiData.departure &&
@@ -100,7 +102,7 @@ export function VisitedLocationModal({
   useEffect(() => {
     form.resetFields();
     setSelectedCountry(countryData.country);
-    setSelectedProvince(countryData.province)
+    setSelectedProvince(countryData.province);
     form.setFieldValue("country", countryData.countryCode);
     form.setFieldValue("province", countryData.provinceCode);
   }, [form, countryData, countriesResponse]);
@@ -140,7 +142,7 @@ export function VisitedLocationModal({
           province: selectedProvince,
         });
 
-        fireApiRequest();
+        createNewVisiteedLocation();
       })
       .catch((error) => console.log(error));
   };
@@ -160,7 +162,9 @@ export function VisitedLocationModal({
 
   return (
     <>
+      {/* Notification component to produce success of error pop up */}
       {contextHolder}
+
       <Modal
         destroyOnClose
         open={showModal}
