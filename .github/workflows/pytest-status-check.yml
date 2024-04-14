@@ -2,7 +2,7 @@ name: Run PyTest
 
 on:
   pull_request:
-    branches: ["*", "!main"]
+    branches: ["**", "!main"]
     paths: ['src/python/**']
 
 jobs:
