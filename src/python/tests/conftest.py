@@ -24,6 +24,7 @@ def user():
             UserPoolId=os.getenv("COGNITO_USER_POOL_ID"),
             Username=os.getenv("COGNITO_EMAIL"),
             TemporaryPassword=os.getenv("COGNITO_PASSWORD"),
+            MessageAction='SUPPRESS'
         )
 
         auth_client.admin_set_user_password(

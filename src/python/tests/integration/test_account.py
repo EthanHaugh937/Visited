@@ -1,12 +1,13 @@
 import boto3
 import os
 from dotenv import load_dotenv
+import pytest
 
 load_dotenv()
 
 auth_client = boto3.client("cognito-idp")
 
-
+@pytest.mark.last
 def test_delete_user_account(client_app, user):
     response = client_app.delete(
         "/api/v1.0/account",
