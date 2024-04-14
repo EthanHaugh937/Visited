@@ -2,8 +2,11 @@ name: Run PyTest
 
 on:
   pull_request:
-    branches: ["**", "!main"]
-    paths: ['src/python/**']
+    branches: 
+      - !main
+      - '**'
+    paths: 
+      - 'src/python/**'
 
 jobs:
   test:
