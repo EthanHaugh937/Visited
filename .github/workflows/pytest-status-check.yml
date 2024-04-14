@@ -1,0 +1,47 @@
+name: Run PyTest
+
+on:
+  pull-request:
+    branches: ["*", "!main"]
+    paths: ['src/python/**']
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: src/python
+
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.12'
+
+    - name: Create dotenv file
+      run: |
+        touch .env
+        echo COGNITO_USER_POOL_ID=${{ secrets.COGNITO_USER_POOL_ID }} >> .env
+        echo COGNITO_EMAIL=${{ secrets.COGNITO_EMAIL }} >> .env
+        echo COGNITO_PASSWORD=${{ secrets.COGNITO_PASSWORD }} >> .env
+        echo COGNITO_CLIENT_ID=${{ secrets.COGNITO_CLIENT_ID }} >> .env
+        cat .env
+
+    - name: Install dependencies
+      run: 
+        pip install -r requirements.txt
+
+    - name: Run PyTest
+      run:
+        pytest
+
+    - name: Check test results
+      run: |
+        if [ $? -ne 0 ]; then
+          echo "PyTest failed"
+          exit 1
+        fi
+
+    
