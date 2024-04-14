@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 
 export function WishListTable() {
   const [refetch, setRefetch] = useState<boolean>(false);
-  const { isLoading, locations } = UseGetUserWishLocations({refetch});
+  const { isLoading, locations } = UseGetUserWishLocations({ refetch });
 
   const { confirm } = Modal;
 
@@ -44,7 +44,9 @@ export function WishListTable() {
 
   const [noificationApi, contextHolder] = notification.useNotification();
 
-  const countriesList = new Set(Array.from(locations, (record) => record.country))
+  const countriesList = new Set(
+    Array.from(locations, (record) => record.country)
+  );
 
   const openErrorNotificationWithIcon = (error: string) => {
     noificationApi["error"]({
@@ -65,8 +67,11 @@ export function WishListTable() {
       render: (record) => {
         return record.country;
       },
-      filters: Array.from(countriesList, (record) => {return {text: record, value: record}}),
-      onFilter: (value, record) => record.country.indexOf(value as string) === 0,
+      filters: Array.from(countriesList, (record) => {
+        return { text: record, value: record };
+      }).sort((a, b) => a.value.localeCompare(b.value)),
+      onFilter: (value, record) =>
+        record.country.indexOf(value as string) === 0,
     },
     {
       title: "Province",

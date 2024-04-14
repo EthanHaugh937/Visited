@@ -69,7 +69,7 @@ export function VisitedListTable() {
       },
       filters: Array.from(countriesList, (record) => {
         return { text: record, value: record };
-      }),
+      }).sort((a, b) => a.value.localeCompare(b.value)),
       onFilter: (value, record) =>
         record.country.indexOf(value as string) === 0,
       sorter: (a, b) => a.country.localeCompare(b.country),
