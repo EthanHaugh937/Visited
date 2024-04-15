@@ -61,8 +61,9 @@ export function MapVisualisationView() {
       </FloatButton.Group>
 
       <Row justify={"end"}>
+        <i className="bi bi-globe-americas text-primary h4"></i>
         <Switch
-          className="mx-3"
+        className="mx-2 mt-1"
           defaultValue={false}
           onChange={(event) => setGlobeVisualisation(event)}
           checkedChildren={<CheckOutlined />}
