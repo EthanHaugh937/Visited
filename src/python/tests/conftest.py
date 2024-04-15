@@ -19,6 +19,7 @@ def client_app():
 def user():
     auth_client = boto3.client("cognito-idp", region_name="us-east-1")
 
+    # Attempt to make mock user
     try:
         auth_client.admin_create_user(
             UserPoolId=os.getenv("COGNITO_USER_POOL_ID"),
