@@ -22,41 +22,51 @@ from queries.location_queries import (
 )
 @authenticated
 def add_visited_location(authentication: Dict):
-    if not (countryCode := request.json.get("countryCode")):
-        return make_response(jsonify({"message": "Country Code not provided"}), 400)
+    validationFields = [
+        "countryCode",
+        "provinceCode",
+        "arrival",
+        "departure",
+        "country",
+        "province",
+    ]
+    userInformation = dict()
 
-    if not (provinceCode := request.json.get("provinceCode")):
-        return make_response(jsonify({"message": "Province Code not provided"}), 400)
-
-    if not (arrival := request.json.get("arrival")):
-        return make_response(jsonify({"message": "Arrival date not provided"}), 400)
-
-    if not (departure := request.json.get("departure")):
-        return make_response(jsonify({"message": "Departure date not provided"}), 400)
+    for field in validationFields:
+        if (data := request.json.get(field)) is None:
+            return make_response(
+                jsonify({"message": f"Parameter: {field} not provided"}), 400
+            )
+        userInformation.update({field: data})
 
     userId = authentication.get("userId")
 
     try:
         if validateVisitedEntryExists(
             userId,
-            arrival,
-            departure,
-            f"{countryCode}-{provinceCode}",
+            userInformation["arrival"],
+            userInformation["departure"],
+            f"{userInformation['countryCode']}-{userInformation['provinceCode']}",
         ):
             return make_response(jsonify({"message": "Record already exists"}), 400)
     except RecordDoesNotExist:
         response = insertNewVisitedRecordForUser(
-            userId, arrival, departure, f"{countryCode}-{provinceCode}"
+            userId,
+            userInformation["arrival"],
+            userInformation["departure"],
+            f"{userInformation['countryCode']}-{userInformation['provinceCode']}",
+            userInformation["country"],
+            userInformation["province"],
         )
         return make_response(response, 200)
 
     dataToUpsert = dict(
         id=str(uuid.uuid4()),
-        arrival=arrival,
-        departure=departure,
-        location=f"{countryCode}-{provinceCode}",
-        country=request.json.get("country"),
-        province=request.json.get("province"),
+        arrival=userInformation["arrival"],
+        departure=userInformation["departure"],
+        location=f"{userInformation['countryCode']}-{userInformation['provinceCode']}",
+        country=userInformation["country"],
+        province=userInformation["province"],
     )
 
     response = upsertVisitedRecord(userId, dataToUpsert)
@@ -70,34 +80,45 @@ def add_visited_location(authentication: Dict):
 )
 @authenticated
 def add_wish_location(authentication: Dict):
-    if not (countryCode := request.json.get("countryCode")):
-        return make_response(jsonify({"message": "Country Code not provided"}), 404)
+    validationFields = [
+        "countryCode",
+        "country",
+        "provinceCode",
+        "province",
+    ]
+    userInformation = dict()
 
-    if not (provinceCode := request.json.get("provinceCode")):
-        return make_response(jsonify({"message": "Province Code not provided"}), 404)
+    for field in validationFields:
+        if (data := request.json.get(field)) is None:
+            return make_response(
+                jsonify({"message": f"Parameter: {field} not provided"}), 400
+            )
+        userInformation.update({field: data})
 
     userId = authentication.get("userId")
 
+    # Check does document exist for user, if not create one
     try:
         if validateWishEntryExists(
             userId,
-            f"{countryCode}-{provinceCode}",
+            f"{userInformation['countryCode']}-{userInformation['provinceCode']}",
         ):
             return make_response(jsonify({"message": "Record already exists"}), 400)
     except RecordDoesNotExist:
         response = insertNewWishRecordForUser(
             userId,
-            f"{countryCode}-{provinceCode}",
-            country=request.json.get("country"),
-            province=request.json.get("province"),
+            f"{userInformation['countryCode']}-{userInformation['provinceCode']}",
+            country=userInformation["country"],
+            province=userInformation["province"],
         )
         return make_response(response, 200)
 
+    # Upsert document as one exists for user
     dataToUpsert = dict(
         id=str(uuid.uuid4()),
-        location=f"{countryCode}-{provinceCode}",
-        country=request.json.get("country"),
-        province=request.json.get("province"),
+        location=f"{userInformation['countryCode']}-{userInformation['provinceCode']}",
+        country=userInformation["country"],
+        province=userInformation["province"],
     )
 
     response = upsertWishRecord(userId, dataToUpsert)

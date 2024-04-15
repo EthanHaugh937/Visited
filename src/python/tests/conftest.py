@@ -17,13 +17,15 @@ def client_app():
 # Create Cognito user to access protected Flask endpoints
 @pytest.fixture
 def user():
-    auth_client = boto3.client("cognito-idp")
+    auth_client = boto3.client("cognito-idp", region_name="us-east-1")
 
+    # Attempt to make mock user
     try:
         auth_client.admin_create_user(
             UserPoolId=os.getenv("COGNITO_USER_POOL_ID"),
             Username=os.getenv("COGNITO_EMAIL"),
             TemporaryPassword=os.getenv("COGNITO_PASSWORD"),
+            MessageAction='SUPPRESS'
         )
 
         auth_client.admin_set_user_password(
@@ -35,7 +37,10 @@ def user():
     except Exception as e:
         if e.response.get("Error").get("Code") == "UsernameExistsException":
             pass
+        else:
+            return e
 
+    # Yield user information
     response = auth_client.initiate_auth(
         ClientId=os.getenv("COGNITO_CLIENT_ID"),
         AuthFlow="USER_PASSWORD_AUTH",

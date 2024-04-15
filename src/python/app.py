@@ -3,12 +3,16 @@ from flask_cors import CORS
 from waitress import serve
 from azure.cosmos import CosmosClient
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 settings = {
     "host": os.environ.get("ACCOUNT_HOST", "https://visited.documents.azure.com:443/"),
     "master_key": os.environ.get("COSMOS_ACCOUNT_KEY"),
 }
 
+# Initialise Cosmos Client
 client = CosmosClient(
     settings["host"],
     {"masterKey": settings["master_key"]},
