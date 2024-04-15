@@ -37,6 +37,8 @@ def user():
     except Exception as e:
         if e.response.get("Error").get("Code") == "UsernameExistsException":
             pass
+        else:
+            return e
 
     # Yield user information
     response = auth_client.initiate_auth(
