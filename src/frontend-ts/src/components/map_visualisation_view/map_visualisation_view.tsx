@@ -5,16 +5,23 @@ import {
 } from "../../apis/user_locations";
 import Map from "../map_visualisation/map_visualisation";
 import VisitedStatistics from "../visited_statistics/visited_statistics";
-import { FloatButton, Row } from "antd";
+import { FloatButton, Row, Switch } from "antd";
 import { CountryData } from "../../types/types";
 import VisitedLocationModal from "../visited_location_modal/visited_location_modal";
 import WishListModal from "../wish_list_modal/wish_list_modal";
-import { BulbOutlined, CloudOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+  BulbOutlined,
+  CheckOutlined,
+  CloseOutlined,
+  CloudOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
 
 export function MapVisualisationView() {
   const [showVisitedModal, setShowVisitedModal] = useState<boolean>(false);
   const [showWishModal, setShowWishModal] = useState<boolean>(false);
   const [refetch, setRefetch] = useState<boolean>(false);
+  const [globeVisualisation, setGlobeVisualisation] = useState<boolean>(false);
   const [countryData, setCountryData] = useState<CountryData>({
     country: "",
     province: "",
@@ -35,6 +42,7 @@ export function MapVisualisationView() {
         <Map
           visitedPlaces={visitedResponse}
           wishLocations={wishResponse}
+          globeVisualisation={globeVisualisation}
           setCountryData={setCountryData}
           setModalOpen={setShowVisitedModal}
         />
@@ -51,6 +59,16 @@ export function MapVisualisationView() {
           icon={<PlusOutlined />}
         />
       </FloatButton.Group>
+
+      <Row justify={"end"}>
+        <Switch
+          className="mx-3"
+          defaultValue={false}
+          onChange={(event) => setGlobeVisualisation(event)}
+          checkedChildren={<CheckOutlined />}
+          unCheckedChildren={<CloseOutlined />}
+        ></Switch>
+      </Row>
 
       <VisitedStatistics
         visitedResponse={visitedResponse}

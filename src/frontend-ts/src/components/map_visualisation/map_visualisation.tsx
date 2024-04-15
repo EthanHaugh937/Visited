@@ -13,6 +13,7 @@ import { Spin } from "antd";
 export interface MapProps {
   visitedPlaces: useGetUserLocationsResponse;
   wishLocations: useGetUserLocationsResponse;
+  globeVisualisation: boolean;
   setCountryData: Dispatch<SetStateAction<CountryData>>;
   setModalOpen: Dispatch<SetStateAction<boolean>>;
 }
@@ -20,6 +21,7 @@ export interface MapProps {
 export function Map({
   visitedPlaces,
   wishLocations,
+  globeVisualisation,
   setCountryData,
   setModalOpen,
 }: MapProps) {
@@ -30,7 +32,11 @@ export function Map({
 
     let chart = root.container.children.push(
       am5map.MapChart.new(root, {
-        projection: am5map.geoNaturalEarth1(),
+        panX: "rotateX",
+        panY: "rotateY",
+        projection: globeVisualisation
+          ? am5map.geoOrthographic()
+          : am5map.geoNaturalEarth1(),
         draggable: false,
       })
     );
@@ -62,6 +68,10 @@ export function Map({
         exclude: ["AQ"],
         visible: false,
       })
+    );
+
+    const backgroundSeries = chart.series.push(
+      am5map.MapPolygonSeries.new(root, {})
     );
 
     // Change the default colour for countries
@@ -210,6 +220,15 @@ export function Map({
       setModalOpen(true);
     });
 
+    backgroundSeries.mapPolygons.template.setAll({
+      fill: am5.color(0x000000),
+      fillOpacity: 0.07,
+    });
+
+    backgroundSeries.data.push({
+      geometry: am5map.getGeoRectangle(90, 180, -90, -180),
+    });
+
     let homeButton = zoomControl.children.moveValue(
       am5.Button.new(root, {
         paddingTop: 10,
@@ -249,7 +268,13 @@ export function Map({
     return () => {
       root.dispose();
     };
-  }, [setCountryData, setModalOpen, visitedPlaces, wishLocations.locations]);
+  }, [
+    globeVisualisation,
+    setCountryData,
+    setModalOpen,
+    visitedPlaces,
+    wishLocations.locations,
+  ]);
 
   return (
     <>
