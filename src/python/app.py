@@ -12,6 +12,7 @@ settings = {
     "master_key": os.environ.get("COSMOS_ACCOUNT_KEY"),
 }
 
+# Initialise Cosmos Client
 client = CosmosClient(
     settings["host"],
     {"masterKey": settings["master_key"]},
