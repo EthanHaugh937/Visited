@@ -10,6 +10,7 @@ from exceptions.account_exceptions import RecordDoesNotExist
 
 conn = boto3.client("cognito-idp")
 
+# Delete user CosmosDB entry and Cognito Profile
 @app.route("/api/v1.0/account", methods=['DELETE'])
 @authenticated
 def delete_account(authentication: Dict[str, str]):
