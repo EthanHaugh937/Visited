@@ -38,6 +38,7 @@ def user():
         if e.response.get("Error").get("Code") == "UsernameExistsException":
             pass
 
+    # Yield user information
     response = auth_client.initiate_auth(
         ClientId=os.getenv("COGNITO_CLIENT_ID"),
         AuthFlow="USER_PASSWORD_AUTH",
