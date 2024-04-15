@@ -5,7 +5,7 @@ import pytest
 
 load_dotenv()
 
-auth_client = boto3.client("cognito-idp")
+auth_client = boto3.client("cognito-idp", region_name="us-east-1")
 
 
 @pytest.mark.last
