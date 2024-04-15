@@ -22,6 +22,7 @@ def get_user_visited_locations(authentication: Dict[str, str]):
 @app.route("/api/v1.0/wishlocation", methods=["GET"])
 @authenticated
 def get_user_wish_locations(authentication: Dict[str, str]):
+    # Attempt to get user document, if not retrieved, return error response
     try:
         visitedResponse = getUserVisitedLocations(authentication.get("userId"))
     except RecordDoesNotExist:
