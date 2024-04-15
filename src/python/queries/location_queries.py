@@ -164,6 +164,7 @@ def deleteUserLocation(userId: str, recordId: str, container: ContainerProxy):
         record for record in userRecord["locations"] if record.get("id") != recordId
     ]
 
+    # If locations array has not changed length, nothing has been deleted
     if (len(userRecord["locations"]) == lengthBefore):
         raise RecordDoesNotExist(recordId)
 
