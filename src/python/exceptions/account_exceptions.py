@@ -1,4 +1,4 @@
 class RecordDoesNotExist(Exception):
-    def __init__(self, userId):
-        self.message = f"Record with User ID: {userId} - Does not exist"
+    def __init__(self, Id: str):
+        self.message = f"Record with ID: {Id} - Does not exist"
         super().__init__(self.message)
