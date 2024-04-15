@@ -17,7 +17,7 @@ def client_app():
 # Create Cognito user to access protected Flask endpoints
 @pytest.fixture
 def user():
-    auth_client = boto3.client("cognito-idp")
+    auth_client = boto3.client("cognito-idp", region_name="us-east-1")
 
     try:
         auth_client.admin_create_user(
