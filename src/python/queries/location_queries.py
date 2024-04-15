@@ -157,9 +157,14 @@ def deleteUserLocation(userId: str, recordId: str, container: ContainerProxy):
         userRecord = getUserRecord(userId, container)
     except RecordDoesNotExist as e:
         raise e
+    
+    lengthBefore = len(userRecord["locations"])
 
     userRecord["locations"] = [
         record for record in userRecord["locations"] if record.get("id") != recordId
     ]
+
+    if (len(userRecord["locations"]) == lengthBefore):
+        raise RecordDoesNotExist(recordId)
 
     return container.upsert_item(body=userRecord)

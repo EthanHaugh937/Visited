@@ -154,3 +154,28 @@ def test_retrieve_delete_visited_record(client_app, user):
 
     assert delete_response.status_code == 200
     assert delete_response.json.get("locations") == []
+    
+@pytest.mark.order7
+def test_nonexistent_delete_visited_record(client_app, user):
+    delete_response = client_app.delete(
+        f"/api/v1.0/location/test-id-123",
+        headers={
+            "Authorization": f'Bearer {user.get("AuthenticationResult").get("AccessToken")}'
+        },
+    )
+
+    assert delete_response.status_code == 404
+    assert delete_response.json.get("message") == "The requested record to delete cannot be found"
+    
+
+@pytest.mark.order8
+def test_nonexistent_delete_wish_record(client_app, user):
+    delete_response = client_app.delete(
+        f"/api/v1.0/wishlocation/test-id-123",
+        headers={
+            "Authorization": f'Bearer {user.get("AuthenticationResult").get("AccessToken")}'
+        },
+    )
+
+    assert delete_response.status_code == 404
+    assert delete_response.json.get("message") == "The requested record to delete cannot be found"
