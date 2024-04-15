@@ -38,5 +38,6 @@ def test_delete_user_account(client_app, user):
         }
     )
 
+    # Assert error response
     assert retrieve_response.status_code == 401
     assert retrieve_response.json.get("message") == "Access Token is invalid!"
