@@ -97,6 +97,7 @@ def add_wish_location(authentication: Dict):
 
     userId = authentication.get("userId")
 
+    # Check does document exist for user, if not create one
     try:
         if validateWishEntryExists(
             userId,
