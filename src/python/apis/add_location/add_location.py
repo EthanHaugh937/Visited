@@ -113,6 +113,7 @@ def add_wish_location(authentication: Dict):
         )
         return make_response(response, 200)
 
+    # Upsert document as one exists for user
     dataToUpsert = dict(
         id=str(uuid.uuid4()),
         location=f"{userInformation['countryCode']}-{userInformation['provinceCode']}",
