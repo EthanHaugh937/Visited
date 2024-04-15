@@ -30,6 +30,7 @@ jobs:
           echo COGNITO_EMAIL=${{ secrets.COGNITO_EMAIL }} >> .env
           echo COGNITO_PASSWORD=${{ secrets.COGNITO_PASSWORD }} >> .env
           echo COGNITO_CLIENT_ID=${{ secrets.COGNITO_CLIENT_ID }} >> .env
+          echo COSMOS_ACCOUNT_KEY=${{ secrets.COSMOS_ACCOUNT_KEY }} >> .env
           cat .env
 
       - name: Install dependencies
