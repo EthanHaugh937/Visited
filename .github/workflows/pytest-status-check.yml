@@ -23,7 +23,7 @@ jobs:
         with:
           python-version: '3.12'
 
-       - name: Configure AWS Credentials
+      - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::253588643630:role/github-actions
