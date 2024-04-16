@@ -29,3 +29,15 @@ def test_delete_user_account(client_app, user):
     except Exception as e:
         assert e.response.get("Error").get("Message") == "User does not exist."
         assert e.response.get("Error").get("Code") == "UserNotFoundException"
+
+    # Check has access token been revoked
+    retrieve_response = client_app.get(
+        "/api/v1.0/location",
+        headers={
+            "Authorization": f'Bearer {user.get("AuthenticationResult").get("AccessToken")})'
+        }
+    )
+
+    # Assert error response
+    assert retrieve_response.status_code == 401
+    assert retrieve_response.json.get("message") == "Access Token is invalid!"
