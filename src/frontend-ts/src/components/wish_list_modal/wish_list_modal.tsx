@@ -9,9 +9,13 @@ import { ProvinceSelect } from "../country_province_dropdown_select/province_sel
 export interface WishListModalProps {
   showModal: boolean;
   setShowModal: Dispatch<SetStateAction<boolean>>;
-  setRefetch: Dispatch<SetStateAction<boolean>>
+  setRefetch: Dispatch<SetStateAction<boolean>>;
 }
-export function WishListModal({ showModal, setShowModal, setRefetch }: WishListModalProps) {
+export function WishListModal({
+  showModal,
+  setShowModal,
+  setRefetch,
+}: WishListModalProps) {
   const [form] = Form.useForm();
   const [accessToken, setAccessToken] = useState<string | undefined>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -62,7 +66,7 @@ export function WishListModal({ showModal, setShowModal, setRefetch }: WishListM
         .then(() => {
           setIsLoading(false);
           setShowModal(false);
-          setRefetch(true)
+          setRefetch(true);
           form.resetFields();
           return openSuccessNotificationWithIcon(
             "Wish List Item Added Successfully!"
@@ -125,7 +129,9 @@ export function WishListModal({ showModal, setShowModal, setRefetch }: WishListM
           </Button>,
         ]}
       >
-        <Typography.Title level={5}>Add Wish List Item</Typography.Title>
+        <Typography.Title level={5} id="add-wishlist-location-modal-title">
+          Add Wish List Item
+        </Typography.Title>
         <Form form={form}>
           <Form.Item label="Country">
             <Space.Compact>
