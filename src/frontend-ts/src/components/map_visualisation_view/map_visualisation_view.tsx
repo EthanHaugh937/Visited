@@ -49,14 +49,16 @@ export function MapVisualisationView() {
       </Row>
 
       {/* Button to accomodate adding new data */}
-      <FloatButton.Group trigger="hover" icon={<CloudOutlined />}>
+      <FloatButton.Group trigger="click" icon={<CloudOutlined />}>
         <FloatButton
           onClick={() => setShowWishModal(true)}
           icon={<BulbOutlined />}
+          aria-label="produce-wishlist-modal"
         />
         <FloatButton
           onClick={() => setShowVisitedModal(true)}
           icon={<PlusOutlined />}
+          aria-label="produce-visited-modal"
         />
       </FloatButton.Group>
 

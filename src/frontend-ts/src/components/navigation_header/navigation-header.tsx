@@ -34,10 +34,11 @@ function NavigationHeader() {
   return (
     <>
       <div className={`${styles.header} bg-black-3`}>
-        <div className={`px-3 mt-2`}>Visited</div>
+        <div className={`px-3 mt-2`} id="application-title">Visited</div>
         <div className={`px-3 mt-2`}>
           <Button
             ghost
+            id="account-button"
             shape="circle"
             icon={<UserOutlined />}
             onClick={onDrawerOpen}
