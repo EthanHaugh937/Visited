@@ -121,6 +121,36 @@ class SeleniumTestSuite(unittest.TestCase):
         switchBtn = driver.find_element(By.ID, "switch-visualisation-btn")
         assert switchBtn.get_property("ariaChecked") == "true"
 
+    def test_change_visualisation_button(self):
+        driver = self.driver
+        sign_in(self)
+
+        accountButton = driver.find_element(By.ID, "account-button")
+        accountButton.click()
+
+        time.sleep(2)
+
+        drawerMask = driver.find_element(By.CLASS_NAME, "ant-drawer-mask")
+        assert drawerMask.is_displayed()
+
+        logoutBtn = driver.find_element(By.ID, "logout-button")
+        logoutBtn.click()
+
+        time.sleep(2)
+
+        # Look for application title, should not be found
+        try:
+            driver.find_element(By.ID, "application-title")
+        except NoSuchElementException as e:
+            pass
+
+        # Attempt to navigate back to landing page
+        driver.get("http://localhost:3000")
+        try:
+            driver.find_element(By.ID, "application-title")
+        except NoSuchElementException as e:
+            pass
+
     def tearDown(self):
         self.driver.close()
 
