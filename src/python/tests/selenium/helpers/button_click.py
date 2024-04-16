@@ -1,6 +1,7 @@
 import time
 from selenium.webdriver.common.by import By
 
+# Click float button, click visited button
 def open_add_visited_location_modal(self):
     driver = self.driver
 
@@ -12,6 +13,7 @@ def open_add_visited_location_modal(self):
     elem = driver.find_element(By.CSS_SELECTOR, "[aria-label=produce-visited-modal]")
     elem.click()
 
+# Click float button, click wish list button
 def open_add_wishlist_location_modal(self):
     driver = self.driver
 
