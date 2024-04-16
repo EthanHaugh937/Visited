@@ -138,6 +138,14 @@ class SeleniumTestSuite(unittest.TestCase):
 
         time.sleep(2)
 
+        # Look for application title, should not be found
+        try:
+            driver.find_element(By.ID, "application-title")
+        except NoSuchElementException as e:
+            pass
+
+        # Attempt to navigate back to landing page
+        driver.get("http://localhost:3000")
         try:
             driver.find_element(By.ID, "application-title")
         except NoSuchElementException as e:
