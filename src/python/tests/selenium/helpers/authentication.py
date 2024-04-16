@@ -31,6 +31,6 @@ def sign_in(self):
 
     # Check that the landing page is loading by checking the Visited title
     try:
-        elem = driver.find_element(By.ID, "application-title")
+        driver.find_element(By.ID, "application-title")
     except NoSuchElementException as e:
         raise e

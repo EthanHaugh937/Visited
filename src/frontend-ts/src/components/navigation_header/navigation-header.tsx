@@ -34,7 +34,9 @@ function NavigationHeader() {
   return (
     <>
       <div className={`${styles.header} bg-black-3`}>
-        <div className={`px-3 mt-2`} id="application-title">Visited</div>
+        <div className={`px-3 mt-2`} id="application-title">
+          Visited
+        </div>
         <div className={`px-3 mt-2`}>
           <Button
             ghost
@@ -55,12 +57,22 @@ function NavigationHeader() {
         closable={false}
       >
         <Row className="mt-3" justify={"center"}>
-          <Button type="text" size="large" onClick={handleAccountClick}>
+          <Button
+            type="text"
+            size="large"
+            onClick={handleAccountClick}
+            id="view-account-details-button"
+          >
             Account
           </Button>
         </Row>
         <Row className="mt-3" justify={"center"}>
-          <Button type="text" size="large" onClick={handleSignOut}>
+          <Button
+            type="text"
+            size="large"
+            onClick={handleSignOut}
+            id="logout-button"
+          >
             Logout
           </Button>
         </Row>
