@@ -94,7 +94,12 @@ export function WishListTable() {
   return (
     <>
       {contextHolder}
-      <Table loading={isLoading} dataSource={locations} columns={columns} />
+      <Table
+        id="wish-list-table"
+        loading={isLoading}
+        dataSource={locations}
+        columns={columns}
+      />
     </>
   );
 }

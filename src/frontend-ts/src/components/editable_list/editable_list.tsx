@@ -17,6 +17,7 @@ export function EditableList({ dataSource }: EditableListProps) {
             <Button
               shape="circle"
               icon={<EditOutlined />}
+              id={item.key}
               ghost
               onClick={() => {
                 item.action(true);

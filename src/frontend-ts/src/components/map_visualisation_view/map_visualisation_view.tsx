@@ -65,7 +65,8 @@ export function MapVisualisationView() {
       <Row justify={"end"}>
         <i className="bi bi-globe-americas text-primary h4"></i>
         <Switch
-        className="mx-2 mt-1"
+          className="mx-2 mt-1"
+          id="switch-visualisation-btn"
           defaultValue={false}
           onChange={(event) => setGlobeVisualisation(event)}
           checkedChildren={<CheckOutlined />}

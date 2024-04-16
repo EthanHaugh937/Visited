@@ -80,7 +80,14 @@ export function VisitedStatistics({
         destroyOnClose
         open={visitedModalOpen}
         onCancel={handleModalCancel}
-        footer={<Button onClick={handleModalCancel}>Close</Button>}
+        footer={
+          <Button
+            onClick={handleModalCancel}
+            id="close-visited-locations-table"
+          >
+            Close
+          </Button>
+        }
       >
         <VisitedListTable />
       </Modal>
@@ -88,7 +95,11 @@ export function VisitedStatistics({
         destroyOnClose
         open={wishModalOpen}
         onCancel={handleModalCancel}
-        footer={<Button onClick={handleModalCancel}>Close</Button>}
+        footer={
+          <Button onClick={handleModalCancel} id="close-wish-list-table">
+            Close
+          </Button>
+        }
       >
         <WishListTable />
       </Modal>
