@@ -111,6 +111,7 @@ export function VisitedListTable() {
     <>
       {contextHolder}
       <Table
+        id="visited-places-table"
         key="table"
         loading={isLoading}
         dataSource={locations}

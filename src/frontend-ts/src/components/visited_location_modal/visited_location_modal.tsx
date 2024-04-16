@@ -187,7 +187,7 @@ export function VisitedLocationModal({
         <Typography.Title level={5} id="add-visited-location-modal-title">
           Add Visited Location Item
         </Typography.Title>
-        <Form form={form}>
+        <Form form={form} id="add-visited-location-form">
           <Form.Item label="Country">
             <Space.Compact>
               <Form.Item name={"country"} noStyle>
