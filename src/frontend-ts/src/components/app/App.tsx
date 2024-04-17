@@ -11,7 +11,7 @@ Amplify.configure(awsconfig);
 
 function App() {
   return (
-    <Authenticator>
+    <Authenticator className="mt-4">
       <Row className={styles.header}>
         <Col span={24}>
           <NavigationHeader />
