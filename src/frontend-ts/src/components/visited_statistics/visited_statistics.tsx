@@ -1,4 +1,6 @@
-import { Button, Col, Modal, Row } from "antd";
+import { Col, Row } from "antd/es/grid";
+import Button from "antd/es/button"
+import Modal from "antd/es/modal"
 import styles from "./visited_statistics.module.css";
 import { StatisticVisualisation } from "../statistics/countries_visited/countries_visited";
 import {

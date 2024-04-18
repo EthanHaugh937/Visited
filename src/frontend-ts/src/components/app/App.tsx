@@ -1,5 +1,5 @@
 import NavigationHeader from "../navigation_header/navigation-header";
-import { Col, Row } from "antd";
+import { Col, Row } from "antd/es/grid";
 import MapVisualisationView from "../map_visualisation_view/map_visualisation_view";
 import { Amplify } from "aws-amplify";
 import { Authenticator } from "@aws-amplify/ui-react";

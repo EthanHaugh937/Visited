@@ -1,7 +1,7 @@
-import { Select, SelectProps } from "antd";
+import Select, { SelectProps } from "antd/es/select";
 import { GetCountries } from "../../apis/countries";
 import { Dispatch, SetStateAction } from "react";
-import styles from "./country_select.module.css";
+import styles from "./location_select.module.css";
 
 export interface CountryProvinceSelectProps {
   setSelectedCountry: Dispatch<SetStateAction<string>>;

@@ -1,8 +1,8 @@
 import { Dispatch, SetStateAction } from "react";
-import { useGetCountryProvinces } from "../../apis/countryCodes";
-import styles from "./country_select.module.css";
+import { useGetCountryProvinces } from "../../apis/country_codes";
+import styles from "./location_select.module.css";
 
-import { Select, SelectProps } from "antd";
+import Select, { SelectProps } from "antd/es/select";
 
 export interface ProvinceSelectProps {
   selectedCountry: string;
@@ -33,11 +33,11 @@ export function ProvinceSelect({
   const handleSelectChange = (provinceCode: string) => {
     provincesOptions.map((province) => {
       if (province.value === provinceCode) {
-        setSelectedProvinceCode(provinceCode)
-        return setSelectedProvince(province.label as string)
+        setSelectedProvinceCode(provinceCode);
+        return setSelectedProvince(province.label as string);
       }
-      return null
-    })
+      return null;
+    });
   };
 
   return (

@@ -1,10 +1,12 @@
-import { Button, Drawer, Row } from "antd";
+import { Row } from "antd/es/grid";
+import Drawer from "antd/es/drawer";
+import Button from "antd/es/button";
 import styles from "./navigation-header.module.css";
 import { Amplify } from "aws-amplify";
 import "@aws-amplify/ui-react/styles.css";
 import awsconfig from "../../aws-exports";
 import { signOut } from "aws-amplify/auth";
-import { UserOutlined } from "@ant-design/icons";
+import UserOutlined from "@ant-design/icons/UserOutlined";
 import { useState } from "react";
 import AccountSettingsModal from "../account_settings_modal/account_settings_modal";
 

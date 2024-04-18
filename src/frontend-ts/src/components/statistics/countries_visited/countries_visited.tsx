@@ -1,4 +1,8 @@
-import { Col, Progress, Row, Spin, Statistic, Typography } from "antd";
+import Typography from "antd/es/typography";
+import {Col, Row } from "antd/es/grid"
+import Spin from "antd/es/spin"
+import Progress from "antd/es/progress"
+import Statistic from "antd/es/statistic"
 import styles from "./countries_visited.module.css";
 import { FireOutlined } from "@ant-design/icons";
 import { ProgressProps } from "antd/es/progress/progress";

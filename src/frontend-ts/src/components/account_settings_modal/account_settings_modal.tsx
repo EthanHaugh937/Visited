@@ -11,7 +11,7 @@ import {
   UseDeleteUserAccount,
   useFetchUserAttributes,
 } from "../../apis/authentication";
-import { DeleteOutlined } from "@ant-design/icons";
+import DeleteOutlined from "@ant-design/icons/DeleteOutlined";
 import { Dispatch, SetStateAction } from "react";
 
 export interface AccountSettingsModalProps {

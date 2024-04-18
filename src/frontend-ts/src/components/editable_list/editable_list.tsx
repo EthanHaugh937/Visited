@@ -1,5 +1,7 @@
 import { EditOutlined } from "@ant-design/icons";
-import { Button, List, Typography } from "antd";
+import Typography from "antd/es/typography";
+import List from "antd/es/list";
+import Button from "antd/es/button";
 import { ListData } from "../../types/types";
 
 export interface EditableListProps {
