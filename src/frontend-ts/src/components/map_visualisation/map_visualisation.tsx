@@ -8,7 +8,7 @@ import * as am5plugins_exporting from "@amcharts/amcharts5/plugins/exporting";
 import styles from "./map.module.css";
 import { Dispatch, SetStateAction, useLayoutEffect } from "react";
 import { CountryData, useGetUserLocationsResponse } from "../../types/types";
-import { Spin } from "antd";
+import Spin from "antd/es/spin";
 
 export interface MapProps {
   visitedPlaces: useGetUserLocationsResponse;
@@ -26,7 +26,7 @@ export function Map({
   setModalOpen,
 }: MapProps) {
   useLayoutEffect(() => {
-    const root = am5.Root.new("chartdiv");
+    const root = am5.Root.new("mapdiv");
 
     root.setThemes([am5themes_Animated.new(root)]);
 
@@ -46,7 +46,7 @@ export function Map({
       am5map.ZoomControl.new(root, {})
     );
 
-    // Create seperate map Series, exclude Antarctica
+    // Create separate map Series, exclude Antarctica
     const continentSeries = chart.series.push(
       am5map.MapPolygonSeries.new(root, {
         geoJSON: am5geodata_continentsLow,
@@ -74,23 +74,22 @@ export function Map({
       am5map.MapPolygonSeries.new(root, {})
     );
 
-    // Change the default colour for countries
+    // Change the default colour for countries and add tooltip
     continentSeries.mapPolygons.template.setAll({
       interactive: true,
       tooltipText: "{name}",
       fill: am5.color("#aaaaaa"),
-      templateField: "polygonSettings",
-    });
-
-    // Highlight country on hover
-    continentSeries.mapPolygons.template.states.create("hover", {
-      fill: am5.color("#6c6765"),
     });
 
     selectedCountrySeries.mapPolygons.template.setAll({
       tooltipText: "{name}",
       fill: am5.color("#aaaaaa"),
       interactive: true,
+    });
+
+    // Highlight country on hover
+    continentSeries.mapPolygons.template.states.create("hover", {
+      fill: am5.color("#6c6765"),
     });
 
     selectedCountrySeries.mapPolygons.template.states.create("hover", {
@@ -114,7 +113,8 @@ export function Map({
       }
     );
 
-    // Add country maps to individual countries
+    // Append country maps to individual countries
+    // Reference: https://www.amcharts.com/docs/v5/charts/map-chart/country-data/
     let data = [];
     for (const id in am5geodata_data_countries) {
       if (am5geodata_data_countries.hasOwnProperty(id)) {
@@ -133,13 +133,12 @@ export function Map({
       am5.Legend.new(root, {
         nameField: "name",
         fillField: "color",
-        strokeField: "color",
       })
     );
 
     legend.data.setAll([
       {
-        name: "Vistied",
+        name: "Visited",
         color: am5.color("#888888"),
       },
       {
@@ -158,62 +157,64 @@ export function Map({
 
       // Zoom to country
       const zoomContinentAnimation = continentSeries.zoomToDataItem(dataItem);
-      continentSeries.zoomToDataItem(dataItem);
 
+      // Reference: https://www.amcharts.com/docs/v5/charts/map-chart/map-drill-down/
       if (selectedMap.map) {
-        Promise.all([
-          zoomContinentAnimation?.waitForStop(),
-          am5.net.load(
-            "https://cdn.amcharts.com/lib/5/geodata/json/" +
-              selectedMap.map +
-              ".json",
-            chart
-          ),
-        ]).then((results) => {
-          const geodata = am5.JSONParser.parse(results[1].response as string);
-          selectedCountrySeries.setAll({
-            geoJSON: geodata,
-          });
+        zoomContinentAnimation?.waitForStop().then(() => {
+          countrySeries.zoomToDataItem(dataItem);
+          am5.net
+            .load(
+              "https://cdn.amcharts.com/lib/5/geodata/json/" +
+                selectedMap.map +
+                ".json",
+              chart
+            )
+            .then((results) => {
+              const geodata = am5.JSONParser.parse(results.response as string);
+              selectedCountrySeries.setAll({
+                geoJSON: geodata,
+              });
 
-          // Recolour visited states/provinces
-          selectedCountrySeries.mapPolygons.template.adapters.add(
-            "fill",
-            function (fill, target) {
-              const targeted = target.dataItem?.dataContext! as any;
-              if (
-                targeted.id &&
-                visitedPlaces.locations.find(
-                  (record) => record.location === targeted.id
-                )
-              ) {
-                return am5.color("#888888");
-              }
+              // Recolour visited states/provinces
+              selectedCountrySeries.mapPolygons.template.adapters.add(
+                "fill",
+                function (fill, target) {
+                  const targeted = target.dataItem?.dataContext! as any;
+                  if (
+                    targeted.id &&
+                    visitedPlaces.locations.find(
+                      (record) => record.location === targeted.id
+                    )
+                  ) {
+                    return am5.color("#888888");
+                  }
 
-              if (
-                targeted.id &&
-                wishLocations.locations.find(
-                  (record) => record.location === targeted.id
-                )
-              ) {
-                return am5.color("#EAEAEA");
-              }
-              return fill;
-            }
-          );
+                  if (
+                    targeted.id &&
+                    wishLocations.locations.find(
+                      (record) => record.location === targeted.id
+                    )
+                  ) {
+                    return am5.color("#EAEAEA");
+                  }
+                  return fill;
+                }
+              );
 
-          continentSeries.hide();
-          selectedCountrySeries.show();
+              selectedCountrySeries.show();
+              continentSeries.hide(100);
+            });
         });
       }
     });
 
     // Open modal with country code when state/province is clicked
     selectedCountrySeries.mapPolygons.template.events.on("click", (ev) => {
-      const targetted = ev.target.dataItem?.dataContext as any;
-      const codes = targetted.id.split("-");
+      const targeted = ev.target.dataItem?.dataContext as any;
+      const codes = targeted.id.split("-");
       setCountryData({
-        country: targetted.CNTRY,
-        province: targetted.name,
+        country: targeted.CNTRY,
+        province: targeted.name,
         countryCode: codes[0],
         provinceCode: codes[1],
       });
@@ -284,7 +285,7 @@ export function Map({
         </div>
       )}
       <div
-        id="chartdiv"
+        id="mapdiv"
         className={
           visitedPlaces.isLoading
             ? `${styles.map} ${styles.mapLoading}`
