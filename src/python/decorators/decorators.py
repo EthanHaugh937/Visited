@@ -1,18 +1,11 @@
 from functools import wraps
 import json
-from typing import Dict
 from urllib.request import urlopen
 from flask import jsonify, request
 from jose import JWTError, jwt
 
-
-class AuthError(Exception):
-    def __init__(self, error: Dict[str, str], status_code: int):
-        super().__init__()
-        self.error = error
-        self.status_code = status_code
-
-
+# Wrapper derived from Auth0 documentation, modified for project purpose
+# https://auth0.com/docs/quickstart/backend/python/01-authorization#validate-access-tokens
 def authenticated(func):
     @wraps(func)
     def authenticated(*args, **kwargs):
@@ -33,7 +26,9 @@ def authenticated(func):
             )
 
         # Retrieve signing keys from AWS Cognito
-        token_signing_key = urlopen("https://cognito-idp.us-east-1.amazonaws.com/us-east-1_5jDVTIUE5/.well-known/jwks.json")
+        token_signing_key = urlopen(
+            "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_5jDVTIUE5/.well-known/jwks.json"
+        )
         signing_keys = json.loads(token_signing_key.read())
 
         # Attempt to split token into parts
@@ -42,8 +37,9 @@ def authenticated(func):
         except JWTError:
             return jsonify({"message": "Access Token is invalid!"}), 401
 
-        # Check was the provided token signed by any Cognito signing keys
         rsa_key = {}
+
+        # Check was the provided token signed by any Cognito signing keys
         for key in signing_keys["keys"]:
             if key["kid"] == unverified_header["kid"]:
                 rsa_key = {
@@ -55,7 +51,7 @@ def authenticated(func):
                 }
 
         if rsa_key:
-            # Attempt to decode and verifying signing signature
+            # Attempt to decode and verify signing signature
             try:
                 payload = jwt.decode(
                     token,
@@ -77,12 +73,9 @@ def authenticated(func):
                 )
             except jwt.ExpiredSignatureError:
                 return jsonify({"message": "Access Token expired"}), 401
-            
+
             return func(dict(userId=payload["sub"], token=token), *args, **kwargs)
-        
-        raise AuthError(
-            {"message": "Invalid Header: Could not find valid singing key"},
-            401,
-        )
+    
+        return jsonify({"message": "Access tokens signing key could not be verified"}), 401
 
     return authenticated
