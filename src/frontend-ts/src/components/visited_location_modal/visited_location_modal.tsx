@@ -61,7 +61,9 @@ export function VisitedLocationModal({
   useEffect(() => {
     setSelectedCountryCode(countryData.countryCode);
     setSelectedProvinceCode(countryData.provinceCode);
-  }, [countryData.countryCode, countryData.provinceCode]);
+    setSelectedCountry(countryData.country);
+    setSelectedProvince(countryData.province);
+  }, [countryData]);
 
   const createNewVisiteedLocation = async () => {
     if (
