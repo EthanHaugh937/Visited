@@ -23,7 +23,7 @@ export function VisitedListTable() {
       title: "Are you sure you want to delete?",
       icon: <DeleteOutlined type="danger" />,
       content:
-        "This will delete the wish list item, this action cannot be undone!",
+        "This will delete the visited item, this action cannot be undone!",
       okText: "Delete",
       okType: "danger",
       cancelText: "Cancel",
@@ -31,11 +31,11 @@ export function VisitedListTable() {
         return UseDeleteUserVisitedLocation({ recordId: id })
           .then(() => {
             setRefetch(true);
-            openSuccessNotificationWithIcon("Wish list item deleted!");
+            openSuccessNotificationWithIcon("Visited location item deleted!");
           })
           .catch((error) =>
             openErrorNotificationWithIcon(
-              "There was an issue deleting the wish list item!"
+              "There was an issue deleting the location item!"
             )
           );
       },
