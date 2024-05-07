@@ -81,7 +81,7 @@ export function VisitedListTable() {
       },
     },
     {
-      title: "Duration",
+      title: "Duration (Days)",
       render: (record: locations) => {
         const arrived = new Date(
           record.arrival?.replaceAll("Z", "/") as string
