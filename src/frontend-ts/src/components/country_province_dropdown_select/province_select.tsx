@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { useGetCountryProvinces } from "../../apis/country_codes";
 import styles from "./location_select.module.css";
 
@@ -22,12 +22,6 @@ export function ProvinceSelect({
   const provincesResponse = useGetCountryProvinces({
     country: selectedCountry,
   });
-
-  // Remove currently selected province when selected country changes
-  useEffect(() => {
-    setSelectedProvinceCode("");
-    setSelectedProvince("");
-  }, [selectedCountry, setSelectedProvince, setSelectedProvinceCode]);
 
   provincesResponse?.provinces?.data?.states.forEach((province) => {
     provincesOptions.push({
